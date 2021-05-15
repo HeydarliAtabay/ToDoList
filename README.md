@@ -1,12 +1,12 @@
 # BigLab 2 - Class: 2021 WA1
 
-## Team name: TEAM_NAME
+## Team name: THE DEBUGGERS
 
 Team members:
-* s123456 LASTNAME FIRSTNAME
-* s123456 LASTNAME FIRSTNAME 
-* s123456 LASTNAME FIRSTNAME
-* s123456 LASTNAME FIRSTNAME (delete line if not needed)
+
+- s277000 HEYDARLI ATABAY
+- s275373 TUZER BADE SU
+- s290292 SOUFIANE AKSADI
 
 ## Instructions
 
@@ -25,8 +25,8 @@ Finally, remember to add the `final` tag for the final submission, otherwise it 
 
 Provide a short description for API with the required parameters, follow the proposed structure.
 
-* [HTTP Method] [URL, with any parameter]
-* [One-line about what this API is doing]
-* [Sample request, with body (if any)]
-* [Sample response, with body (if any)]
-* [Error responses, if any]
+- [HTTP Method] [URL, with any parameter]
+- [One-line about what this API is doing]
+- [Sample request, with body (if any)]
+- [Sample response, with body (if any)]
+- [Error responses, if any]
