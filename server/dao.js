@@ -2,45 +2,152 @@
 /* Data Access Object (DAO) module for accessing courses and exams */
 
 const sqlite = require('sqlite3');
+const dayjs = require('dayjs');
+
+
 
 // open the database
 const db = new sqlite.Database('tasks.db', (err) => {
   if(err) throw err;
 });
 
+ const getTodayDate = (date) => {
+  return dayjs().isSame(date, 'day')
+ 
+ }
+
+ const todaydatetime= (date)=>{
+   const today = dayjs().isSame(date,'day')
+   const tomorrow = dayjs().add(2,'day')
+
+   return date.isAfter(today) && date.isBefore(tomorrow)
+ }
+
+ const todaysdate= dayjs().format('YYYY-MM-DD HH : mm')
+console.log(getTodayDate())
+ const getNextWeek = (date) => {
+  const nextW=dayjs().add(7, 'day')
+  const nextD=dayjs().add(1,'day')
+  return date.isAfter(nextD) && date.isBefore(nextW)
+}
+
 // get all tasks
-exports.listAllTasks = () => {
+// exports.listAllTasks = () => {
+//   return new Promise((resolve, reject) => {
+//     const sql = 'SELECT * FROM tasks';
+//     db.all(sql, [], (err, rows) => {
+//       if (err) {
+//         reject(err);
+//         return;
+//       }
+//       const tasks = rows.map((task) => ({ id: task.id, description: task.description, important: task.important,
+//     private: task.private, deadline:task.deadline  }));
+//       resolve(tasks);
+//     });
+//   });
+// };
+
+
+// // get important tasks
+// exports.listImportantTasks = () => {
+//     return new Promise((resolve, reject) => {
+//       const sql = 'SELECT * FROM tasks Where important=1';
+//       db.all(sql, [], (err, rows) => {
+//         if (err) {
+//           reject(err);
+//           return;
+//         }
+//         const tasks = rows.map((task) => ({ id: task.id, description: task.description, important: task.important,
+//       private: task.private, deadline:task.deadline  }));
+//         resolve(tasks);
+//       });
+//     });
+//   };
+
+//   // get private tasks
+// exports.listPrivateTasks = () => {
+//   return new Promise((resolve, reject) => {
+//     const sql = 'SELECT * FROM tasks Where private=1';
+//     db.all(sql, [], (err, rows) => {
+//       if (err) {
+//         reject(err);
+//         return;
+//       }
+//       const tasks = rows.map((task) => ({ id: task.id, description: task.description, important: task.important,
+//     private: task.private, deadline:task.deadline  }));
+//       resolve(tasks);
+//     });
+//   });
+// };
+
+// // tasks for today
+// exports.listTodayTasks =()=> {
+//   return new Promise((resolve, reject) => {
+//     const today=todaysdate
+//     const sql = 'SELECT * FROM tasks Where deadline>today ';
+//     db.all(sql, [], (err, rows) => {
+//       if (err) {
+//         reject(err);
+//         return;
+//       }
+//       const tasks = rows.map((task) => ({ id: task.id, description: task.description, important: task.important,
+//     private: task.private, deadline:task.deadline  }));
+//       resolve(tasks);
+//     });
+//   });
+// };
+
+
+exports.getWithFilter = function(filter) {
   return new Promise((resolve, reject) => {
-    const sql = 'SELECT * FROM tasks';
-    db.all(sql, [], (err, rows) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      const courses = rows.map((task) => ({ id: task.id, description: task.description, important: task.important,
-    private: task.private, deadline:task.deadline  }));
-      resolve(courses);
-    });
-  });
-};
-
-
-// get important tasks
-exports.listImportantTasks = () => {
-    return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM tasks Where important=1';
+      const sql = "SELECT * FROM tasks";
       db.all(sql, [], (err, rows) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        const courses = rows.map((task) => ({ id: task.id, description: task.description, important: task.important,
-      private: task.private, deadline:task.deadline  }));
-        resolve(courses);
+          if (err) {
+              reject(err);
+          } else {
+              let tasks =  rows.map((task) => ({ id: task.id, description: task.description, important: task.important,
+                private: task.private, deadline:task.deadline  }));
+              if(filter){
+                  switch(filter){
+                      case "important":
+                          tasks = tasks.filter((el) => {
+                              return el.important;
+                          });
+                          break;
+                      case "private":
+                          tasks = tasks.filter((el) => {
+                              return el.private;
+                          });
+                          break;
+                      case "public":
+                          tasks = tasks.filter((el) => {
+                              return !el.private;
+                          });
+                          break;
+                      case "today":
+                          tasks = tasks.filter((el) => {
+                              if(el.deadline)
+                                  return todaydatetime(el.deadline);
+                              else
+                                  return false;
+                          });
+                          break;
+                      case "week":
+                          tasks = tasks.filter((el) => {
+                              if(el.deadline)
+                                  return getNextWeek(el.deadline);
+                              else
+                                  return false;
+                          });
+                          break;
+                     
+                  }
+              }
+              resolve(tasks);
+          }
       });
-    });
-  };
-
+  });
+}
 
 // get the course identified by {code}
 exports.getCourse = (code) => {
@@ -125,3 +232,4 @@ exports.deleteExam = (course_code) => {
     });
   });
 }
+

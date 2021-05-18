@@ -4,3 +4,13 @@ GET http://localhost:3001/api/tasks
 
 GET http://localhost:3001/api/tasks/important
 
+###
+
+GET http://localhost:3001/api/tasks/private
+
+
+###
+
+GET http://localhost:3001/api/tasks/today
+
+
