@@ -31,72 +31,23 @@ console.log(getTodayDate())
   return date.isAfter(nextD) && date.isBefore(nextW)
 }
 
-// get all tasks
-// exports.listAllTasks = () => {
-//   return new Promise((resolve, reject) => {
-//     const sql = 'SELECT * FROM tasks';
-//     db.all(sql, [], (err, rows) => {
-//       if (err) {
-//         reject(err);
-//         return;
-//       }
-//       const tasks = rows.map((task) => ({ id: task.id, description: task.description, important: task.important,
-//     private: task.private, deadline:task.deadline  }));
-//       resolve(tasks);
-//     });
-//   });
-// };
+//get all tasks
+exports.listAllTasks = () => {
+  return new Promise((resolve, reject) => {
+    const sql = 'SELECT * FROM tasks';
+    db.all(sql, [], (err, rows) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      const tasks = rows.map((task) => ({ id: task.id, description: task.description, important: task.important,
+    private: task.private, deadline:task.deadline  }));
+      resolve(tasks);
+    });
+  });
+};
 
-
-// // get important tasks
-// exports.listImportantTasks = () => {
-//     return new Promise((resolve, reject) => {
-//       const sql = 'SELECT * FROM tasks Where important=1';
-//       db.all(sql, [], (err, rows) => {
-//         if (err) {
-//           reject(err);
-//           return;
-//         }
-//         const tasks = rows.map((task) => ({ id: task.id, description: task.description, important: task.important,
-//       private: task.private, deadline:task.deadline  }));
-//         resolve(tasks);
-//       });
-//     });
-//   };
-
-//   // get private tasks
-// exports.listPrivateTasks = () => {
-//   return new Promise((resolve, reject) => {
-//     const sql = 'SELECT * FROM tasks Where private=1';
-//     db.all(sql, [], (err, rows) => {
-//       if (err) {
-//         reject(err);
-//         return;
-//       }
-//       const tasks = rows.map((task) => ({ id: task.id, description: task.description, important: task.important,
-//     private: task.private, deadline:task.deadline  }));
-//       resolve(tasks);
-//     });
-//   });
-// };
-
-// // tasks for today
-// exports.listTodayTasks =()=> {
-//   return new Promise((resolve, reject) => {
-//     const today=todaysdate
-//     const sql = 'SELECT * FROM tasks Where deadline>today ';
-//     db.all(sql, [], (err, rows) => {
-//       if (err) {
-//         reject(err);
-//         return;
-//       }
-//       const tasks = rows.map((task) => ({ id: task.id, description: task.description, important: task.important,
-//     private: task.private, deadline:task.deadline  }));
-//       resolve(tasks);
-//     });
-//   });
-// };
-
+//get tasks with specific filter
 
 exports.getWithFilter = function(filter) {
   return new Promise((resolve, reject) => {
@@ -148,6 +99,45 @@ exports.getWithFilter = function(filter) {
       });
   });
 }
+//get tasks with given id
+exports.getTask = (code) => {
+  return new Promise((resolve, reject) => {
+    const sql = 'SELECT * FROM tasks WHERE id=?';
+    db.get(sql, [code], (err, row) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      if (row == undefined) {
+        reject({error: 'Course not found.'});
+      } else {
+        const course = {  id: row.id, description: row.description, important: row.important,
+          private: row.private, deadline: row.deadline };
+        resolve(course);
+      }
+    });
+  });
+};
+
+// test: get tasks with given desctiption
+exports.getTaskwithDescription = (desc) => {
+  return new Promise((resolve, reject) => {
+    const sql = 'SELECT * FROM tasks WHERE description=?';
+    db.get(sql, [desc], (err, row) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      if (row == undefined) {
+        reject({error: 'Course not found.'});
+      } else {
+        const course = {  id: row.id, description: row.description, important: row.important,
+          private: row.private, deadline: row.deadline };
+        resolve(course);
+      }
+    });
+  });
+};
 
 // get the course identified by {code}
 exports.getCourse = (code) => {

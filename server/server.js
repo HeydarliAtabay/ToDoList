@@ -11,11 +11,11 @@ app.get('/',(req, res)=>{
     res.send(`Hi from the server, which is running on  http://localhost:${PORT}/`)
 })
 
-// app.get('/api/tasks', (req,res)=>{
-//     dao.listAllTasks()
-//         .then((tasks)=>{res.json(tasks)})
-//         .catch((error)=>{res.status(500).json(error)} )
-// })
+ app.get('/api/tasks', (req,res)=>{
+    dao.listAllTasks()
+        .then((tasks)=>{res.json(tasks)})
+         .catch((error)=>{res.status(500).json(error)} )
+ })
 
 // app.get('/api/tasks/important', (req,res)=>{
 //     dao.listImportantTasks()
@@ -29,10 +29,30 @@ app.get('/',(req, res)=>{
 //         .catch((error)=>{res.status(500).json(error)} )
 // })
 
-app.get('/api/tasks/:filter', async (req, res) => {
+app.get('/api/tasks/filter/:filter', async (req, res) => {
     const filter = req.params.filter;
     try {
         let tasks = await dao.getWithFilter(filter);
+        res.json(tasks);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+
+app.get('/api/tasks/:id', async (req,res)=>{
+    const id= req.params.id;
+    try{
+        let task=await dao.getTask(id)
+        res.json(task)
+    }
+    catch(error){
+        res.status(500).json(error)
+    }
+})
+app.get('/api/tasks/:description', async (req, res) => {
+    const description = req.params.filter;
+    try {
+        let tasks = await dao.getWithFilter(description);
         res.json(tasks);
     } catch (error) {
         res.status(500).json(error);

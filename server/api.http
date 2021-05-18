@@ -1,16 +1,25 @@
+### Get All tasks
 GET http://localhost:3001/api/tasks
 
-###
+### Get important Tasks
 
-GET http://localhost:3001/api/tasks/important
+GET http://localhost:3001/api/tasks/filter/important
 
-###
+### Get private Tasks
 
-GET http://localhost:3001/api/tasks/private
+GET http://localhost:3001/api/tasks/filter/private
 
 
-###
+### Get public Tasks
 
-GET http://localhost:3001/api/tasks/today
+GET http://localhost:3001/api/tasks/filter/public
+
+### Get Task with a given id
+
+GET http://localhost:3001/api/tasks/5
+
+### Get Task with a given description
+
+GET http://localhost:3001/api/tasks/ImATest
 
 
