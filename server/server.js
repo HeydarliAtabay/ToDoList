@@ -53,22 +53,20 @@ app.post('/api/tasks', (req,res) => {
 });
 
 app.put('/api/tasks/update/:taskId', (req,res) => {
-    if(!req.body.id){
-        res.status(400).end();
-    } else {
+   
         const task = req.body;
         dao.updateTask(req.params.taskId,task)
-            .then((id) => res.status(200).json({"id":id}))
+            .then((id) => res.status(200).json(" Task was updated succesfully"))
             .catch((error) => res.status(500).json(error),
             );
-    }
+   
 });
 
 app.put('/api/tasks/update/completed/:taskId',  async(req,res) => {
         const id = req.params.taskId;
         try{
             let task=await dao.updateTaskStatusCompleted(id)
-            res.json(task)
+            res.json("Status of the selected task was changed to Completed")
         }
         catch(error){
             res.status(500).json(error)
@@ -79,7 +77,7 @@ app.put('/api/tasks/update/uncompleted/:taskId',  async(req,res) => {
     const id = req.params.taskId;
     try{
         let task=await dao.updateTaskStatusUncompleted(id)
-        res.json(task)
+        res.json("Status of the selected task was changed to Uncompleted")
     }
     catch(error){
         res.status(500).json(error)
