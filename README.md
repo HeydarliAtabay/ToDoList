@@ -25,6 +25,70 @@ Finally, remember to add the `final` tag for the final submission, otherwise it 
 
 Provide a short description for API with the required parameters, follow the proposed structure.
 
+### Getting all Tasks
+
+- [GET http://localhost:3001/api/tasks]
+- [This API is just taking all tasks from the DB]
+- [{ id: task.id, description: task.description, important: task.important, private: task.private, deadline:task.deadline }]
+- [Error responses, if any]
+
+### Getting all Tasks
+
+- [HTTP Method] [URL, with any parameter]
+- [One-line about what this API is doing]
+- [Sample request, with body (if any)]
+- [Sample response, with body (if any)]
+- [Error responses, if any]
+
+### Getting filtered tasks
+
+- [GET http://localhost:3001/api/tasks/filter/:filter]
+- [By writing the filter name to the :filter, this API is getting all tasks with given filter]
+- [Sample response, with body (if any)]
+- [Error responses, if any]
+
+### Getting all Tasks
+
+- [HTTP Method] [URL, with any parameter]
+- [One-line about what this API is doing]
+- [Sample request, with body (if any)]
+- [Sample response, with body (if any)]
+- [Error responses, if any]
+
+### Getting all Tasks
+
+- [HTTP Method] [URL, with any parameter]
+- [One-line about what this API is doing]
+- [Sample request, with body (if any)]
+- [Sample response, with body (if any)]
+- [Error responses, if any]
+
+### Getting all Tasks
+
+- [HTTP Method] [URL, with any parameter]
+- [One-line about what this API is doing]
+- [Sample request, with body (if any)]
+- [Sample response, with body (if any)]
+- [Error responses, if any]
+
+### Getting all Tasks
+
+- [HTTP Method] [URL, with any parameter]
+- [One-line about what this API is doing]
+- [Sample request, with body (if any)]
+- [Sample response, with body (if any)]
+- [Error responses, if any]
+
+### Getting all Tasks
+
+- [HTTP Method] [URL, with any parameter]
+- [One-line about what this API is doing]
+- [Sample request, with body (if any)]
+- [Sample response, with body (if any)]
+- [Error responses, if any]
+
+### Getting all Tasks
+
 - [HTTP Method] [URL, with any parameter]
 - [One-line about what this API is doing]
 - [Sample request, with body (if any)]
