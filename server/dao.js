@@ -140,12 +140,44 @@ exports.createTask=(task)=>{
 
 //Update an existing task with a given id
 
-exports.updateTask = function(id, newTask) {
-  if(newTask.deadline)
-      newTask.deadline = dayjs(newTask.deadline);
+exports.updateTask = function(id, task) {
+  if(task.deadline)
+      task.deadline = dayjs(task.deadline);
   return new Promise((resolve, reject) => {
       const sql = 'UPDATE tasks SET description = ?, important = ?, private = ?, deadline = ?, completed = ?,user=? WHERE id = ?';
-      db.run(sql, [newTask.description, newTask.important, newTask.private, newTask.deadline.format("YYYY-MM-DD HH:mm"), newTask.completed, newTask.user, id], (err) => {
+      db.run(sql, [task.description, task.important, task.private, task.deadline.format("YYYY-MM-DD HH:mm"), task.completed, task.user, id], (err) => {
+          if(err){
+              console.log(err);
+              reject(err);
+          }
+          else
+              resolve(null);
+      })
+  });
+}
+
+// Update the status of an existing task to completed
+exports.updateTaskStatusCompleted = function(id) {
+  return new Promise((resolve, reject) => {
+     // const sql = 'UPDATE tasks SET completed = CASE status WHEN completed=0 THEN 1 WHEN completed=1 THEN 0 END WHERE id = ?';
+     const sql= 'UPDATE tasks SET completed=1 WHERE id=?'
+      db.run(sql, [id], (err) => {
+          if(err){
+              console.log(err);
+              reject(err);
+          }
+          else
+              resolve(null);
+      })
+  });
+}
+
+// Update the status of an existing task to uncompleted
+exports.updateTaskStatusUncompleted = function(id) {
+  return new Promise((resolve, reject) => {
+     // const sql = 'UPDATE tasks SET completed = CASE status WHEN completed=0 THEN 1 WHEN completed=1 THEN 0 END WHERE id = ?';
+     const sql= 'UPDATE tasks SET completed=0 WHERE id=?'
+      db.run(sql, [id], (err) => {
           if(err){
               console.log(err);
               reject(err);

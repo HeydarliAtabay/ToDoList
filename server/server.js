@@ -52,7 +52,7 @@ app.post('/api/tasks', (req,res) => {
     }
 });
 
-app.put('/api/tasks/:taskId', (req,res) => {
+app.put('/api/tasks/update/:taskId', (req,res) => {
     if(!req.body.id){
         res.status(400).end();
     } else {
@@ -62,6 +62,29 @@ app.put('/api/tasks/:taskId', (req,res) => {
             .catch((error) => res.status(500).json(error),
             );
     }
+});
+
+app.put('/api/tasks/update/completed/:taskId',  async(req,res) => {
+        const id = req.params.taskId;
+        try{
+            let task=await dao.updateTaskStatusCompleted(id)
+            res.json(task)
+        }
+        catch(error){
+            res.status(500).json(error)
+        }
+    
+});
+app.put('/api/tasks/update/uncompleted/:taskId',  async(req,res) => {
+    const id = req.params.taskId;
+    try{
+        let task=await dao.updateTaskStatusUncompleted(id)
+        res.json(task)
+    }
+    catch(error){
+        res.status(500).json(error)
+    }
+
 });
 
 app.delete('/api/tasks/delete/:taskId', (req,res) => {

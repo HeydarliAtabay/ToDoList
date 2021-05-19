@@ -31,11 +31,17 @@ Content-Type: application/json
 
 ### Update parameters of an existing task
 
-POST http://localhost:3001/api/tasks/6
+PUT http://localhost:3001/api/tasks/update/10
 Content-Type: application/json
 
-{ "description": "Test", "important": 1,"private": 1, "deadline":"2021-19-05" , "completed":0, "user":1 }
+{ "description": "You're not a test", "important": 0,"private": 0, "deadline":"2021-19-05" , "completed":1, "user":1 }
 
+
+### Update task's status to completed
+PUT http://localhost:3001/api/tasks/update/completed/6
+
+### Update task's status to uncompleted
+PUT http://localhost:3001/api/tasks/update/uncompleted/8
 
 ### Delete existing task with a given id
 DELETE http://localhost:3001/api/tasks/delete/15
