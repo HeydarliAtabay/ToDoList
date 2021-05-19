@@ -1,3 +1,6 @@
+### Connection check
+GET http://localhost:3001/
+
 ### Get All tasks
 GET http://localhost:3001/api/tasks
 
@@ -18,8 +21,11 @@ GET http://localhost:3001/api/tasks/filter/public
 
 GET http://localhost:3001/api/tasks/5
 
-### Get Task with a given description
 
-GET http://localhost:3001/api/tasks/ImATest
+### Insert a new task to the DB
 
+POST http://localhost:3001/api/tasks
+Content-Type: application/json
+
+{ "description": "Test", "important": 1,"private": 1, "deadline":"NULL" , "completed":0, "user":1 }
 

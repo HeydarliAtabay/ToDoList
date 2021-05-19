@@ -24,7 +24,6 @@ const db = new sqlite.Database('tasks.db', (err) => {
  }
 
  const todaysdate= dayjs().format('YYYY-MM-DD HH : mm')
-console.log(getTodayDate())
  const getNextWeek = (date) => {
   const nextW=dayjs().add(7, 'day')
   const nextD=dayjs().add(1,'day')
@@ -119,64 +118,22 @@ exports.getTask = (code) => {
   });
 };
 
-// test: get tasks with given desctiption
-exports.getTaskwithDescription = (desc) => {
-  return new Promise((resolve, reject) => {
-    const sql = 'SELECT * FROM tasks WHERE description=?';
-    db.get(sql, [desc], (err, row) => {
-      if (err) {
+exports.createTask=(task)=>{
+
+  if(task.deadline){
+    task.deadline = dayjs(task.deadline);
+}
+  return new Promise((resolve, reject)=>{
+    const sql = 'INSERT INTO tasks(description, important, private, deadline, completed,user) VALUES(?,?,?,?,?,?)'
+    //const sql= 'INSERT INTO tasks(description,user) VALUES(?,?))';
+
+    db.run(sql, [task.description, task.important, task.private, task.deadline.format('YYYY-MM-DD HH:mm'), task.completed, task.user], function(err){
+      if(err){
         reject(err);
         return;
       }
-      if (row == undefined) {
-        reject({error: 'Course not found.'});
-      } else {
-        const course = {  id: row.id, description: row.description, important: row.important,
-          private: row.private, deadline: row.deadline };
-        resolve(course);
-      }
-    });
-  });
-};
-
-// get the course identified by {code}
-exports.getCourse = (code) => {
-  return new Promise((resolve, reject) => {
-    const sql = 'SELECT * FROM course WHERE code=?';
-    db.get(sql, [code], (err, row) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      if (row == undefined) {
-        reject({error: 'Course not found.'});
-      } else {
-        const course = { code: row.code, name: row.name, CFU: row.CFU };
-        resolve(course);
-      }
-    });
-  });
-};
-
-// get all exams
-exports.listExams = () => {
-  return new Promise((resolve, reject) => {
-    const sql = 'SELECT coursecode, score, date FROM exam';
-
-    db.all(sql, (err, rows) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-
-      const exams = rows.map((e) => (
-        {
-          code: e.coursecode,
-          score: e.score,
-          date: e.date,
-        }));
-
-      resolve(exams);
+      console.log(this.lastID);
+      resolve(this.lastID)
     });
   });
 };
