@@ -118,8 +118,8 @@ exports.getTask = (code) => {
   });
 };
 
+//adding new Task to the DB
 exports.createTask=(task)=>{
-
   if(task.deadline){
     task.deadline = dayjs(task.deadline);
 }
@@ -132,40 +132,59 @@ exports.createTask=(task)=>{
         reject(err);
         return;
       }
-      console.log(this.lastID);
       resolve(this.lastID)
     });
   });
 };
 
-// add a new exam
-exports.createExam = (exam) => {
-  return new Promise((resolve, reject) => {
-    const sql = 'INSERT INTO exam(coursecode, date, score) VALUES(?, DATE(?), ?)';
-    db.run(sql, [exam.code, exam.date, exam.score], function (err) {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve(this.lastID);
-    });
-  });
-};
 
-// update an existing exam
-exports.updateExam = (exam) => {
-  return new Promise((resolve, reject) => {
-    const sql = 'UPDATE exam SET date=DATE(?), score=? WHERE coursecode = ?';
-    db.run(sql, [exam.date, exam.score, exam.code], function (err) {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve(this.lastID);
-    });
-  });
-};
+//Update an existing task with a given id
 
+exports.updateTask = function(id, newTask) {
+  if(newTask.deadline)
+      newTask.deadline = dayjs(newTask.deadline);
+  return new Promise((resolve, reject) => {
+      const sql = 'UPDATE tasks SET description = ?, important = ?, private = ?, deadline = ?, completed = ?,user=? WHERE id = ?';
+      db.run(sql, [newTask.description, newTask.important, newTask.private, newTask.deadline.format("YYYY-MM-DD HH:mm"), newTask.completed, newTask.user, id], (err) => {
+          if(err){
+              console.log(err);
+              reject(err);
+          }
+          else
+              resolve(null);
+      })
+  });
+}
+
+// DELETE existing task with a given id
+exports.deleteTask = function(id) {
+  return new Promise((resolve, reject) => {
+      const sql = 'DELETE FROM tasks WHERE id = ?';
+      db.run(sql, [id], (err) => {
+          if(err)
+              reject(err);
+          else 
+              resolve(null);
+      })
+  });
+}
+//******************PROF'S EXAMPLE***********************
+// update an existing exam  
+// exports.updateExam = (exam) => {
+//   return new Promise((resolve, reject) => {
+//     const sql = 'UPDATE exam SET date=DATE(?), score=? WHERE coursecode = ?';
+//     db.run(sql, [exam.date, exam.score, exam.code], function (err) {
+//       if (err) {
+//         reject(err);
+//         return;
+//       }
+//       resolve(this.lastID);
+//     });
+//   });
+// };
+
+
+//******************PROF'S EXAMPLE***********************
 // delete an existing exam
 exports.deleteExam = (course_code) => {
   return new Promise((resolve, reject) => {

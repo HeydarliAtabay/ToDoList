@@ -40,22 +40,6 @@ app.get('/api/tasks/:id', async (req,res)=>{
     }
 })
 
-// app.post('api/tasks/add', async(req,res)=>{
-//     let description=req.body.description
-//     let important=req.body.important
-//     let private=req.body.private
-//     let deadline= req.body.private
-//     let completed=req.body.completed
-//     let user=req.body.user
-//     try {
-//         await dao.createTask({ description:description, important:important,
-//         private:private, deadline:deadline, completed:completed, user:user });
-//         //await dao.createTask({ description:description, user:user });
-//         res.end();
-//     } catch (error) {
-//         res.status(500).json(error);
-//     }
-// })
 app.post('/api/tasks', (req,res) => {
     const task = req.body;
     if(!task){
@@ -63,9 +47,29 @@ app.post('/api/tasks', (req,res) => {
     } else {
         dao.createTask(task)
             .then((id) => res.status(201).json({"id" : id}))
-            .catch((err) => res.status(500).json(error),
+            .catch((error) => res.status(500).json(error),
         );
     }
+});
+
+app.put('/api/tasks/:taskId', (req,res) => {
+    if(!req.body.id){
+        res.status(400).end();
+    } else {
+        const task = req.body;
+        dao.updateTask(req.params.taskId,task)
+            .then((id) => res.status(200).json({"id":id}))
+            .catch((error) => res.status(500).json(error),
+            );
+    }
+});
+
+app.delete('/api/tasks/delete/:taskId', (req,res) => {
+    dao.deleteTask(req.params.taskId)
+        .then((id) => res.status(204).json("Selected task was deleted"))
+        .catch((err) => res.status(500).json({
+            errors: [{'param': 'Server', 'msg': err}],
+        }));
 });
 
 app.listen(PORT, ()=>console.log(`Server running on http://localhost:${PORT}/`));

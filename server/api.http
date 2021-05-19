@@ -27,5 +27,21 @@ GET http://localhost:3001/api/tasks/5
 POST http://localhost:3001/api/tasks
 Content-Type: application/json
 
-{ "description": "Test", "important": 1,"private": 1, "deadline":"NULL" , "completed":0, "user":1 }
+{ "description": "Testashvili perfavore", "important": 1,"private": 1, "deadline":"NULL" , "completed":0, "user":1 }
+
+### Update parameters of an existing task
+
+POST http://localhost:3001/api/tasks/6
+Content-Type: application/json
+
+{ "description": "Test", "important": 1,"private": 1, "deadline":"2021-19-05" , "completed":0, "user":1 }
+
+
+### Delete existing task with a given id
+DELETE http://localhost:3001/api/tasks/delete/15
+
+
+
+
+
 
