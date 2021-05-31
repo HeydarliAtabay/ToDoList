@@ -47,50 +47,52 @@ Provide a short description for API with the required parameters, follow the pro
 - [Sample response, with body (if any)]
 - [Error responses, if any]
 
-### Getting all Tasks
+### Getting Task with selected id
 
-- [HTTP Method] [URL, with any parameter]
-- [One-line about what this API is doing]
-- [Sample request, with body (if any)]
+- [GET http://localhost:3001/api/tasks/:taskID]
+- [This API is taking a task with a given ID]
+- [GET http://localhost:3001/api/tasks/5]
 - [Sample response, with body (if any)]
 - [Error responses, if any]
 
-### Getting all Tasks
+### Creating a new task to the server
 
-- [HTTP Method] [URL, with any parameter]
-- [One-line about what this API is doing]
-- [Sample request, with body (if any)]
+- [POST http://localhost:3001/api/tasks]
+- [Inserting a task, getting info from the request body of the API]
+- [{ "description": "Test 2", "important": 1,"private": 1, "deadline":"2021-05-25 15:00" , "completed":0, "user":1 }]
 - [Sample response, with body (if any)]
 - [Error responses, if any]
 
-### Getting all Tasks
+### Updating a task with given ID
 
-- [HTTP Method] [URL, with any parameter]
-- [One-line about what this API is doing]
-- [Sample request, with body (if any)]
+- [PUT http://localhost:3001/api/tasks/update/:taskID]
+- [Updating selected task with a given ID, info to be updated is taken from the request body]
+- [PUT http://localhost:3001/api/tasks/update/12
+  { "description": "Make a reservation for the study room 2R", "important": 0,"private": 0, "deadline":"2021-05-19 16:00" , "completed":1, "user":1 }
+  ]
 - [Sample response, with body (if any)]
 - [Error responses, if any]
 
-### Getting all Tasks
+### Updating task's status to completed
 
-- [HTTP Method] [URL, with any parameter]
-- [One-line about what this API is doing]
-- [Sample request, with body (if any)]
+- [PUT http://localhost:3001/api/tasks/update/completed/:taskID]
+- [Changing the status of the task from uncompleted to completed]
+- [PUT http://localhost:3001/api/tasks/update/completed/9]
 - [Sample response, with body (if any)]
 - [Error responses, if any]
 
-### Getting all Tasks
+### Updating task's status to uncompleted
 
-- [HTTP Method] [URL, with any parameter]
-- [One-line about what this API is doing]
-- [Sample request, with body (if any)]
+- [PUT http://localhost:3001/api/tasks/update/uncompleted/:taskID]
+- [Changing the status of the task from completed to uncompleted]
+- [PUT http://localhost:3001/api/tasks/update/completed/8]
 - [Sample response, with body (if any)]
 - [Error responses, if any]
 
-### Getting all Tasks
+### Deleting selected task
 
-- [HTTP Method] [URL, with any parameter]
-- [One-line about what this API is doing]
-- [Sample request, with body (if any)]
+- [DELETE http://localhost:3001/api/tasks/delete/:taskID]
+- [Deleting the task with given ID, which is taken from the API request]
+- DELETE http://localhost:3001/api/tasks/delete/15]
 - [Sample response, with body (if any)]
 - [Error responses, if any]
