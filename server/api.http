@@ -27,7 +27,7 @@ GET http://localhost:3001/api/tasks/5
 POST http://localhost:3001/api/tasks
 Content-Type: application/json
 
-{ "description": "Testashvili perfavore 2", "important": 1,"private": 1, "deadline":"2021-05-25 15:00" , "completed":0, "user":1 }
+{ "description": "Testashvili perfavore 2", "important": 1,"private": 1, "deadline":"2021-05-25 15:00"  }
 
 ### Update parameters of an existing task
 

@@ -14,33 +14,46 @@ import Filters from './components/Filters';
 import ContentList from './components/ContentList';
 import ModalForm from './components/ModalForm';
 
-import {loadAllTasks} from './API'
+import API from './API'
 
 import { BrowserRouter as Router, Route, useParams, useHistory, Switch, Redirect } from 'react-router-dom';
 
 dayjs.extend(isToday);
 
 function App() {
-
-  // This state is an object containing the list of tasks, and the last used ID (necessary to create a new task that has a unique ID)
   const [taskList, setTaskList] = useState([]);
-
+  const [loading, setLoading]=useState(true)//this for checking the loading at mount
+  const [dirty, setDirty] =useState(true)
   // use an enum
   const MODAL = { CLOSED: -2, ADD: -1 };
   const [selectedTask, setSelectedTask] = useState(MODAL.CLOSED);
 
+
+
+  // for getting all tasks
   useEffect(() => {
-   loadAllTasks().then(newTask=>setTaskList(newTask))
+    if(dirty){
+      API.loadAllTasks().then(newTask=>{
+        setTaskList(newTask)
+        setLoading(false)
+        setDirty(false)
+       })
+    }
     
-    
-  }, [])
+  }, [dirty])
   function addTask (task)  {
-    const id = Math.max(...taskList.map( t => t.id )) + 1;
-    setTaskList((oldTasks) => [...oldTasks, { ...task, id: id }] );
+    setTaskList((oldTasks) => [...oldTasks,task] );
+   // API.addNewTask(task).then((err)=>{setDirty(true)})
+   API.addTask(task).then((err)=>{setDirty(true)})
   }
 
   function deleteTask (task) {
     setTaskList((oldTasks) => oldTasks.filter( t => t.id !== task.id ));
+    API.deleteTask(task)
+      .then(() => {
+        setDirty(true);
+      }).catch(err => (err) );
+  
   }
 
   function updateTask  (task)  {
@@ -76,7 +89,7 @@ function App() {
         <Row className="vh-100">
           <Switch>
             <Route path={["/list/:filter"]}>
-              <TaskMgr taskList={taskList} onDelete={deleteTask} onEdit={handleEdit}></TaskMgr>
+              <TaskMgr taskList={taskList} onDelete={deleteTask} onEdit={handleEdit} loading={loading}></TaskMgr>
               <Button variant="success" size="lg" className="fixed-right-bottom" onClick={() => setSelectedTask(MODAL.ADD)}>+</Button>
               {(selectedTask !== MODAL.CLOSED) && <ModalForm task={findTask(selectedTask)} onSave={handleSaveOrUpdate} onClose={handleClose}></ModalForm>}
             </Route>
@@ -92,7 +105,7 @@ function App() {
 
 function TaskMgr (props) {
 
-  const { taskList, onDelete, onEdit } = props;
+  const { taskList, onDelete, onEdit,loading } = props;
 
   // Gets active filter from route if matches, otherwise the dafault is all
   const params = useParams();
@@ -130,10 +143,12 @@ function TaskMgr (props) {
         </Col>
       <Col xs={8} className="below-nav">
         <h1 className="pb-3">Filter: <small className="text-muted">{activeFilter}</small></h1>
+        {loading ? <h3>Please wait, data is loading</h3>:
         <ContentList 
           tasks={taskList.filter(filters[activeFilter].filterFn)} 
           onDelete={onDelete} onEdit={onEdit}
           />
+        }
       </Col>
     </>
   )
