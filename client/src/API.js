@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 const url='http://localhost:3000'
 
 
@@ -16,17 +18,6 @@ async function  loadAllTasks(){
  * return null if everything is ok
  * @param {*} task 
  */
-async function addNewTask(task){
- const response = await fetch(url+'/api/tasks',{
-     method: "POST",
-     headers: { "Content-type" : 'application/json'},
-     body: JSON.stringify({...task})
- })
- if(response.ok){
-     return null
- }
- else return { 'err': 'POST was unsuccesful' };
-}
 
 function addTask(task) {
     // call: POST /api/exams
@@ -37,7 +28,7 @@ function addTask(task) {
           'Content-Type': 'application/json',
         },
         //body: JSON.stringify({code: exam.coursecode, score: exam.score, date: exam.date}),
-        body : JSON.stringify({description: task.description, important: task.important, private: task.private, deadline:task.deadline, completed: 0, user:1})
+        body : JSON.stringify({description: task.description, important: task.important, private: task.private, deadline: dayjs(task.deadline), completed: 0, user:1})
         }).then((response) => {
           if (response.ok) {
             resolve(null);
@@ -68,5 +59,5 @@ function addTask(task) {
       }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
     });
   }
-const API={loadAllTasks, addNewTask,addTask,deleteTask}
+const API={loadAllTasks,addTask,deleteTask}
 export default API

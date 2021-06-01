@@ -7,7 +7,6 @@ import { Container, Row, Col, Button } from 'react-bootstrap/';
 
 import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
-import TASKS from './tasks';
 
 import Navigation from './components/Navigation';
 import Filters from './components/Filters';
@@ -41,6 +40,8 @@ function App() {
     }
     
   }, [dirty])
+
+  
   function addTask (task)  {
     setTaskList((oldTasks) => [...oldTasks,task] );
    // API.addNewTask(task).then((err)=>{setDirty(true)})
