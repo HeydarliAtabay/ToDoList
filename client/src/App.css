@@ -1,44 +1,34 @@
-/* Global */
 .vheight-100 {
   min-height: 100vh;
 }
-
 .below-nav {
-  padding-top: 5rem;
+  padding-top: 1rem;
 }
-
 /* Filters and projects */
 .list-group-item {
   background-color: transparent;
 }
-
 .list-group-item.active {
   background-color: #28a745;
   border-color: #28a745;
 }
-
 .list-group-item-action:hover {
   background-color: #9becae;
 }
-
 .projects-title {
   margin-top: 2rem;
 }
-
-
 .important {
   color: red;
 }
-
 .notbold {
   font-weight: normal;
-}​
-
+}
+​
 /* it is not used */
 .dummy {
   color: black;
 }
-
 .fixed-right-bottom {
   position: absolute;
   right: 0;

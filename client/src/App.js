@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -14,6 +14,8 @@ import Filters from './components/Filters';
 import ContentList from './components/ContentList';
 import ModalForm from './components/ModalForm';
 
+import {loadAllTasks} from './API'
+
 import { BrowserRouter as Router, Route, useParams, useHistory, Switch, Redirect } from 'react-router-dom';
 
 dayjs.extend(isToday);
@@ -21,12 +23,17 @@ dayjs.extend(isToday);
 function App() {
 
   // This state is an object containing the list of tasks, and the last used ID (necessary to create a new task that has a unique ID)
-  const [taskList, setTaskList] = useState(TASKS);
+  const [taskList, setTaskList] = useState([]);
 
   // use an enum
   const MODAL = { CLOSED: -2, ADD: -1 };
   const [selectedTask, setSelectedTask] = useState(MODAL.CLOSED);
 
+  useEffect(() => {
+   loadAllTasks().then(newTask=>setTaskList(newTask))
+    
+    
+  }, [])
   function addTask (task)  {
     const id = Math.max(...taskList.map( t => t.id )) + 1;
     setTaskList((oldTasks) => [...oldTasks, { ...task, id: id }] );

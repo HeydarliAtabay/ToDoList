@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 
-const PORT = 3002;
+const PORT = 3001;
 const dao = require('./dao'); // module for accessing the DB
 const dayjs=require('dayjs')
 app = new express();
