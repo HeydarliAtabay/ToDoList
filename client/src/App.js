@@ -66,6 +66,13 @@ function App() {
     ;
   }
 
+  function updateTaskCompleted(task){
+    setTaskList( oldTasks => oldTasks.map( t => t.id === task.id ? {...task} : t) )
+    API.updateTaskStatusCompleted(task)
+    .then(()=>{
+      setDirty(true);
+    }).catch(err=>(err))
+  }
   function findTask (id)  {
     return taskList.find( t => t.id === id);
   }
@@ -95,7 +102,7 @@ function App() {
         <Row className="vh-100">
           <Switch>
             <Route path={["/list/:filter"]}>
-              <TaskMgr taskList={taskList} onDelete={deleteTask} onEdit={handleEdit} loading={loading}></TaskMgr>
+              <TaskMgr taskList={taskList} onDelete={deleteTask} onEdit={handleEdit} loading={loading} onSave={updateTaskCompleted}></TaskMgr>
               <Button variant="success" size="lg" className="fixed-right-bottom" onClick={() => setSelectedTask(MODAL.ADD)}>+</Button>
               {(selectedTask !== MODAL.CLOSED) && <ModalForm task={findTask(selectedTask)} onSave={handleSaveOrUpdate} onClose={handleClose}></ModalForm>}
             </Route>
@@ -111,7 +118,7 @@ function App() {
 
 function TaskMgr (props) {
 
-  const { taskList, onDelete, onEdit,loading } = props;
+  const { taskList, onDelete, onEdit,loading, onSave } = props;
 
   // Gets active filter from route if matches, otherwise the dafault is all
   const params = useParams();
@@ -153,6 +160,7 @@ function TaskMgr (props) {
         <ContentList 
           tasks={taskList.filter(filters[activeFilter].filterFn)} 
           onDelete={onDelete} onEdit={onEdit}
+          onSave={onSave}
           />
         }
       </Col>

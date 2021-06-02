@@ -81,6 +81,24 @@ function addTask(task) {
       }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
     });
   }
+
+  function updateTaskStatusCompleted(task) {
+    // call: PUT /api/exams/:coursecode
+    return new Promise((resolve, reject) => {
+      fetch(url + '/api/tasks/update/completed/' + task.id, {
+        method: 'PUT',
+      }).then((response) => {
+        if (response.ok) {
+          resolve(null);
+        } else {
+          // analyze the cause of error
+          response.json()
+            .then((obj) => { reject(obj); }) // error message in the response body
+            .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+        }
+      }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
+    });
+  }
   
-const API={loadAllTasks,addTask,deleteTask, updateTask}
+const API={loadAllTasks,addTask,deleteTask, updateTask, updateTaskStatusCompleted}
 export default API
