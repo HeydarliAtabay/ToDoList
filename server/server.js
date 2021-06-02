@@ -87,10 +87,9 @@ app.put('/api/tasks/update/uncompleted/:taskId',  async(req,res) => {
 
 app.delete('/api/tasks/delete/:taskId', (req,res) => {
     dao.deleteTask(req.params.taskId)
-        .then((id) => res.status(204).json("Selected task was deleted"))
-        .catch((err) => res.status(500).json({
-            errors: [{'param': 'Server', 'msg': err}],
-        }));
+        .then((id) => res.status(204).json(`Selected task with id:${req.params.taskId} was deleted`))
+        .catch((err) => res.status(500).json(`Error while deleting the task with id:${req.params.taskId}  `+err),
+        );
 });
 
 app.listen(PORT, ()=>console.log(`Server running on http://localhost:${PORT}/`));
