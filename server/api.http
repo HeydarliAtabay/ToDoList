@@ -17,6 +17,14 @@ GET http://localhost:3001/api/tasks/filter/private
 
 GET http://localhost:3001/api/tasks/filter/public
 
+### Get tasks for today
+
+GET http://localhost:3001/api/tasks/filter/today
+
+### Get tasks for today
+
+GET http://localhost:3001/api/tasks/filter/week
+
 ### Get Task with a given id
 
 GET http://localhost:3001/api/tasks/5
@@ -27,7 +35,7 @@ GET http://localhost:3001/api/tasks/5
 POST http://localhost:3001/api/tasks
 Content-Type: application/json
 
-{ "description": "Testashvili perfavore 2", "important": 1,"private": 1, "deadline":"2021-05-25 15:00"  }
+{ "description": "Get a short for Bari trip", "important": 1,"private": 1, "deadline":"2021-06-05 15:00", "completed":0, "user":1  }
 
 ### Update parameters of an existing task
 

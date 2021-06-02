@@ -23,7 +23,7 @@ const db = new sqlite.Database('tasks.db', (err) => {
    return date.isAfter(today) && date.isBefore(tomorrow)
  }
 
- const todaysdate= dayjs().format('YYYY-MM-DD HH : mm')
+ //const todaysdate= dayjs().format('YYYY-MM-DD HH : mm')
  const getNextWeek = (date) => {
   const nextW=dayjs().add(7, 'day')
   const nextD=dayjs().add(1,'day')
@@ -77,7 +77,7 @@ exports.getWithFilter = function(filter) {
                       case "today":
                           tasks = tasks.filter((el) => {
                               if(el.deadline)
-                                  return todaydatetime(el.deadline);
+                                  return todaydatetime(dayjs(el.deadline));
                               else
                                   return false;
                           });
@@ -85,7 +85,7 @@ exports.getWithFilter = function(filter) {
                       case "week":
                           tasks = tasks.filter((el) => {
                               if(el.deadline)
-                                  return getNextWeek(el.deadline);
+                                  return getNextWeek(dayjs(el.deadline));
                               else
                                   return false;
                           });
