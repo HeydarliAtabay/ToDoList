@@ -10,8 +10,8 @@ function ModalForm(props) {
   const [description, setDescription] = useState(task ? task.description : '');
   const [isImportant, setIsImportant] = useState(task ? task.important : false);
   const [isPrivate, setIsPrivate] = useState(task ? task.private : true);
-  const [deadlineDate, setDeadlineDate] = useState( (task && task.deadline) ? task.deadline.format('YYYY-MM-DD') : '');
-  const [deadlineTime, setDeadlineTime] = useState( (task && task.deadline) ? task.deadline.format('HH:mm') : '');
+  const [deadlineDate, setDeadlineDate] = useState( (task && task.deadline) ? dayjs(task.deadline).format('YYYY-MM-DD') : '');
+  const [deadlineTime, setDeadlineTime] = useState( (task && task.deadline) ? dayjs(task.deadline).format('HH:mm') : '');
   
 
   // enables / disables react-bootstrap validation report

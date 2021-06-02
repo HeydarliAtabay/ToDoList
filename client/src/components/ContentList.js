@@ -4,22 +4,22 @@ import isYesterday from 'dayjs/plugin/isYesterday';
 import isTomorrow from 'dayjs/plugin/isTomorrow';
 import isToday from 'dayjs/plugin/isToday';
 
-import { Form, ListGroup, Button } from 'react-bootstrap/';
+import { Form, ListGroup, Button, Col, Row } from 'react-bootstrap/';
 import { PersonSquare, PencilSquare, Trash } from 'react-bootstrap-icons';
 
 dayjs.extend(isYesterday).extend(isToday).extend(isTomorrow);
 
 
-function formatDeadline (d) {
-  if (!d) return '--o--';
-  else if (d.isToday()) {
-    return d.format('[Today at] HH:mm');
-  } else if (d.isTomorrow()) {
-    return d.format('[Tomorrow at] HH:mm');
-  } else if (d.isYesterday()) {
-    return d.format('[Yesterday at] HH:mm');
+function formatDeadline (date) {
+  if (!date) return '--o--';
+  else if (dayjs(date).isToday()) {
+    return dayjs(date).format('[Today at] HH:mm');
+  } else if (dayjs(date).isTomorrow()) {
+    return dayjs(date).format('[Tomorrow at] HH:mm');
+  } else if (dayjs(date).isYesterday()) {
+    return dayjs(date).format('[Yesterday at] HH:mm');
   } else {
-    return d.format('dddd DD MMMM YYYY [at] HH:mm');
+    return dayjs(date).format('dddd DD MMMM YYYY [at] HH:mm');
   }
 }
 
@@ -28,12 +28,16 @@ function TaskRowData(props) {
 
   return (
     <>
+    <Col sm={4}>
       <div className="flex-fill m-auto">
         <Form.Group className="m-0" controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label={task.description} className={task.important ? 'important' : ''} />
         </Form.Group></div>
-      <div className="flex-fill mx-2 m-auto"><PersonSquare className={task.private ? 'invisible' : ''} /></div>
-      <div className="flex-fill m-auto"><small>{(task.deadline)}</small></div>
+        </Col>
+
+      <Col sm={1}><div className="flex-fill mx-2 m-auto"><PersonSquare className={task.private ? 'invisible' : ''} /></div></Col>
+      <Col sm={4}><div className="flex-fill m-auto"><small>{(formatDeadline(task.deadline))}</small></div></Col>
+      
     </>
   )
 }
@@ -42,10 +46,12 @@ function TaskRowControl (props) {
   const { onDelete, onEdit } = props;
   return (
     <>
+    <Col sm={2}>
       <div className="flex-fill m-auto">
         <Button variant="link" className="shadow-none" onClick={onEdit}><PencilSquare /></Button>
         <Button variant="link" className="shadow-none" onClick={onDelete}><Trash /></Button>
       </div>
+      </Col>
     </>
   )
 }
@@ -56,6 +62,7 @@ function ContentList (props) {
 
   return (
     <>
+
       <ListGroup as="ul" variant="flush">
         {
           tasks.map(t => {
@@ -68,6 +75,7 @@ function ContentList (props) {
           })
         }
       </ListGroup>
+      
     </>
   )
 }
