@@ -17,8 +17,8 @@ const db = new sqlite.Database('tasks.db', (err) => {
  }
 
  const todaydatetime= (date)=>{
-   const today = dayjs().isSame(date,'day')
-   const tomorrow = dayjs().add(2,'day')
+   const today = dayjs().add(0,'day')
+   const tomorrow = dayjs().add(1,'day')
 
    return date.isAfter(today) && date.isBefore(tomorrow)
  }

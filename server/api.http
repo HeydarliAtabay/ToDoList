@@ -35,7 +35,7 @@ GET http://localhost:3001/api/tasks/5
 POST http://localhost:3001/api/tasks
 Content-Type: application/json
 
-{ "description": "Get a short for Bari trip", "important": 1,"private": 1, "deadline":"2021-06-05 15:00", "completed":0, "user":1  }
+{ "description": "Task for today", "important": 1,"private": 1, "deadline":"2021-06-02 00:01", "completed":0, "user":1  }
 
 ### Update parameters of an existing task
 
