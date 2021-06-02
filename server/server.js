@@ -15,7 +15,7 @@ app.get('/',(req, res)=>{
  app.get('/api/tasks', (req,res)=>{
     dao.listAllTasks()
         .then((tasks)=>{res.json(tasks)})
-         .catch((error)=>{res.status(500).json(error)} )
+         .catch((error)=>{res.status(500).json("Getting Tasks from server was unsuccesful   "+ error)} )
  })
 
 
@@ -25,7 +25,7 @@ app.get('/api/tasks/filter/:filter', async (req, res) => {
         let tasks = await dao.getWithFilter(filter);
         res.json(tasks);
     } catch (error) {
-        res.status(500).json(error);
+        res.status(500).json(`There was error while getting tasks with selected filter: ${filter}   `+error);
     }
 });
 
@@ -36,7 +36,7 @@ app.get('/api/tasks/:id', async (req,res)=>{
         res.json(task)
     }
     catch(error){
-        res.status(500).json(error)
+        res.status(500).json(`Cannot get a task with selected id:${id}   `+ error)
     }
 })
 
@@ -46,8 +46,8 @@ app.post('/api/tasks', (req,res) => {
         res.status(400).end();
     } else {
         dao.createTask(task)
-            .then((id) => res.status(201).json({"id" : id}))
-            .catch((error) => res.status(500).json(error),
+            .then((id) => res.status(201).json(`New task with id:${id} was added to the DB`))
+            .catch((error) => res.status(500).json("Adding a new task was unsuccessful    "+ error),
         );
     }
 });
@@ -56,8 +56,8 @@ app.put('/api/tasks/update/:taskId', (req,res) => {
    
         const task = req.body;
         dao.updateTask(req.params.taskId,task)
-            .then((id) => res.status(200).json(" Task was updated succesfully"))
-            .catch((error) => res.status(500).json(error),
+            .then((id) => res.status(200).json( `Task with id:${req.params.taskId} was updated succesfully`))
+            .catch((error) => res.status(500).json( `There was error while updating the task with id:${req.params.taskId}    ` + error),
             );
    
 });
@@ -66,10 +66,10 @@ app.put('/api/tasks/update/completed/:taskId',  async(req,res) => {
         const id = req.params.taskId;
         try{
             let task=await dao.updateTaskStatusCompleted(id)
-            res.json("Status of the selected task was changed to Completed")
+            res.json(`Status of task with id: ${id}  was changed to Completed`)
         }
         catch(error){
-            res.status(500).json(error)
+            res.status(500).json(`Error while updating the status of the task with id: ${id}   `+ error)
         }
     
 });
@@ -77,10 +77,10 @@ app.put('/api/tasks/update/uncompleted/:taskId',  async(req,res) => {
     const id = req.params.taskId;
     try{
         let task=await dao.updateTaskStatusUncompleted(id)
-        res.json("Status of the selected task was changed to Uncompleted")
+        res.json(`Status of task with id: ${id}  was changed to Uncompleted`)
     }
     catch(error){
-        res.status(500).json(error)
+        res.status(500).json(`Error while updating the status of the task with id: ${id}   `+ error)
     }
 
 });

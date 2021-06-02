@@ -27,7 +27,7 @@ GET http://localhost:3001/api/tasks/filter/week
 
 ### Get Task with a given id
 
-GET http://localhost:3001/api/tasks/5
+GET http://localhost:3001/api/tasks/35
 
 
 ### Insert a new task to the DB
@@ -35,14 +35,14 @@ GET http://localhost:3001/api/tasks/5
 POST http://localhost:3001/api/tasks
 Content-Type: application/json
 
-{ "description": "Task for today", "important": 1,"private": 1, "deadline":"2021-06-02 00:01", "completed":0, "user":1  }
+{ "description": "Task for today", "important": 1,"private": 1, "deadline":"2021-06-02 00:01", "completed":0 }
 
 ### Update parameters of an existing task
 
-PUT http://localhost:3001/api/tasks/update/12
+PUT http://localhost:3001/api/tasks/update/23
 Content-Type: application/json
 
-{ "description": "Make a reservation for the study room 2R", "important": 0,"private": 0, "deadline":"2021-05-19 16:00" , "completed":1, "user":1 }
+{ "description": "Task for tomorrow", "important": 0,"private": 0, "deadline":"2021-06-03 00:01" , "completed":1, "user":1 }
 
 
 ### Update task's status to completed
@@ -52,7 +52,7 @@ PUT http://localhost:3001/api/tasks/update/completed/9
 PUT http://localhost:3001/api/tasks/update/uncompleted/8
 
 ### Delete existing task with a given id
-DELETE http://localhost:3001/api/tasks/delete/15
+DELETE http://localhost:3001/api/tasks/delete/35
 
 
 
