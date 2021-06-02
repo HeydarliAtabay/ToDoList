@@ -4,7 +4,7 @@ import isYesterday from 'dayjs/plugin/isYesterday';
 import isTomorrow from 'dayjs/plugin/isTomorrow';
 import isToday from 'dayjs/plugin/isToday';
 
-import { Form, ListGroup, Button, Col, Row } from 'react-bootstrap/';
+import { Form, ListGroup, Button, Col } from 'react-bootstrap/';
 import { PersonSquare, PencilSquare, Trash } from 'react-bootstrap-icons';
 
 dayjs.extend(isYesterday).extend(isToday).extend(isTomorrow);
@@ -31,7 +31,7 @@ function TaskRowData(props) {
     <Col sm={4}>
       <div className="flex-fill m-auto">
         <Form.Group className="m-0" controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label={task.description} className={task.important ? 'important' : ''} />
+          <Form.Check type="checkbox" label={task.description} checked={task.completed} className={task.important ? 'important' : '' } />
         </Form.Group></div>
         </Col>
 

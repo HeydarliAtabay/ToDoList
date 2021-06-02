@@ -12,8 +12,7 @@ function ModalForm(props) {
   const [isPrivate, setIsPrivate] = useState(task ? task.private : true);
   const [deadlineDate, setDeadlineDate] = useState( (task && task.deadline) ? dayjs(task.deadline).format('YYYY-MM-DD') : '');
   const [deadlineTime, setDeadlineTime] = useState( (task && task.deadline) ? dayjs(task.deadline).format('HH:mm') : '');
-  
-
+  const [status, setStatus]=useState(task? task.completed : false)
   // enables / disables react-bootstrap validation report
   const [validated, setValidated] = useState(false);
 
@@ -41,7 +40,7 @@ function ModalForm(props) {
         deadline = dayjs(deadlineDate + "T12:00"); // tasks with no time are due by noon
       }
 
-      const newTask = Object.assign({}, task, { description, important: isImportant, private: isPrivate, deadline} );
+      const newTask = Object.assign({}, task, { description, important: isImportant, private: isPrivate, deadline, completed: status} );
 
       onSave(newTask);
     }
@@ -67,6 +66,8 @@ function ModalForm(props) {
       } else {
         setDeadlineDate("");
       }
+      console.log("hello")
+
   }
 
   // noValidate : You can disable the default UI by adding the HTML noValidate attribute to your <Form> or <form> element.
@@ -100,6 +101,9 @@ function ModalForm(props) {
           <Form.Group controlId="form-deadline-time">
             <Form.Label>Deadline Time</Form.Label>
             <Form.Control type="time" name="deadlineTime" value={deadlineTime} onChange={handleDeadlineTime} />
+          </Form.Group>
+          <Form.Group controlId="form-status">
+          <Form.Check custom type="checkbox" label="Completed" name="Completed" checked={status}  onChange={(ev) => setStatus(ev.target.checked)} />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>

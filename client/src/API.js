@@ -59,5 +59,28 @@ function addTask(task) {
       }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
     });
   }
-const API={loadAllTasks,addTask,deleteTask}
+
+  function updateTask(task) {
+    // call: PUT /api/exams/:coursecode
+    return new Promise((resolve, reject) => {
+      fetch(url + '/api/tasks/update/' + task.id, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+          body: JSON.stringify({description: task.description, important: task.important, private: task.private, deadline: dayjs(task.deadline), completed: task.completed, user:1}),
+      }).then((response) => {
+        if (response.ok) {
+          resolve(null);
+        } else {
+          // analyze the cause of error
+          response.json()
+            .then((obj) => { reject(obj); }) // error message in the response body
+            .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+        }
+      }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
+    });
+  }
+  
+const API={loadAllTasks,addTask,deleteTask, updateTask}
 export default API

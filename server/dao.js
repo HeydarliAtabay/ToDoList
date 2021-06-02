@@ -40,7 +40,7 @@ exports.listAllTasks = () => {
         return;
       }
       const tasks = rows.map((task) => ({ id: task.id, description: task.description, important: task.important,
-    private: task.private, deadline:task.deadline  }));
+    private: task.private, deadline:task.deadline, completed: task.completed  }));
       resolve(tasks);
     });
   });
@@ -56,7 +56,7 @@ exports.getWithFilter = function(filter) {
               reject(err);
           } else {
               let tasks =  rows.map((task) => ({ id: task.id, description: task.description, important: task.important,
-                private: task.private, deadline:task.deadline  }));
+                private: task.private, deadline:task.deadline, completed: task.completed  }));
               if(filter){
                   switch(filter){
                       case "important":
@@ -111,7 +111,7 @@ exports.getTask = (code) => {
         reject({error: 'Course not found.'});
       } else {
         const course = {  id: row.id, description: row.description, important: row.important,
-          private: row.private, deadline: row.deadline };
+          private: row.private, deadline: row.deadline, completed: row.completed };
         resolve(course);
       }
     });

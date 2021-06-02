@@ -58,7 +58,12 @@ function App() {
   }
 
   function updateTask  (task)  {
-    setTaskList( oldTasks => oldTasks.map( t => t.id === task.id ? {...task} : t) );
+    setTaskList( oldTasks => oldTasks.map( t => t.id === task.id ? {...task} : t) )
+    API.updateTask(task)
+    .then(() => {
+      setDirty(true);
+    }).catch(err => (err) );
+    ;
   }
 
   function findTask (id)  {
