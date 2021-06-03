@@ -127,8 +127,8 @@ function TaskMgr (props) {
   const filters = {
     'all': { label: 'All', id: 'all', filterFn: () => true },
     'important': { label: 'Important', id: 'important', filterFn: t => t.important },
-    'today': { label: 'Today', id: 'today', filterFn: t => t.deadline && t.deadline.isToday() },
-    'nextweek': { label: 'Next 7 Days', id: 'nextweek', filterFn: t => isNextWeek(t.deadline) },
+    'today': { label: 'Today', id: 'today', filterFn: t => t.deadline && dayjs(t.deadline).isToday() },
+    'nextweek': { label: 'Next 7 Days', id: 'nextweek', filterFn: t => isNextWeek(dayjs(t.deadline)) },
     'private': { label: 'Private', id: 'private', filterFn: t => t.private },
   };
 
@@ -146,6 +146,35 @@ function TaskMgr (props) {
   // Route to the filter view
   function handleSelection(filter) {
     history.push("/list/" + filter);
+    if(filter === "all"){
+      API.getTasks()
+        .then((tasks) => this.setState({tasks: tasks, filter: 'all'}))
+        .catch(err => (err) );
+    } else {
+      API.getTasks(filter)
+        .then((tasks) => {
+          this.setState({tasks: tasks, filter: filter});
+        })
+        .catch(err => (err) );
+    }
+  }
+
+  function filterTasks(filter) {
+    if(filter === "all"){
+      API.getTasks()
+        .then((tasks) => this.setState({tasks: tasks, filter: 'all'}))
+        .catch((errorObj) => {
+          this.handleErrors(errorObj);
+        });
+    } else {
+      API.getTasks(filter)
+        .then((tasks) => {
+          this.setState({tasks: tasks, filter: filter});
+        })
+        .catch((errorObj) => {
+          this.handleErrors(errorObj);
+        });;
+    }
   }
 
 
@@ -159,6 +188,8 @@ function TaskMgr (props) {
         {loading ? <h3>Please wait, data is loading</h3>:
         <ContentList 
           tasks={taskList.filter(filters[activeFilter].filterFn)} 
+         // tasks={filterTasks(taskList.filter(filters[activeFilter].filterFn))} 
+         //tasks={taskList.filterTasks(filters[activeFilter].filterFn)} 
           onDelete={onDelete} onEdit={onEdit}
           onSave={onSave}
           />

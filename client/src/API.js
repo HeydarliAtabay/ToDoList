@@ -1,5 +1,7 @@
 import dayjs from 'dayjs'
 
+import Task from './models/Task'
+
 const url='http://localhost:3000'
 
 
@@ -11,6 +13,35 @@ async function  loadAllTasks(){
 
  //Error handling is missing
 }
+
+
+
+async function getTasks(filter) {
+  let url1 = "/api/tasks";
+  if(filter){
+      const queryParams = "/filter/" + filter;
+      url1 += queryParams;
+  }
+  const response = await fetch(url + url1);
+  const tasksJson = await response.json();
+  if(response.ok){
+      //return tasksJson.map((t) => Task.from(t));
+      return tasksJson.map((t) => new Task(t.id,t.description,t.important, t.privateTask,t.deadline, t.completed,t.user));
+  } else {
+      let err = {status: response.status, errObj:tasksJson};
+      throw err;  // An object with the error coming from the server
+  }
+}
+// async function getAllTasks() {
+//   // call: GET /api/courses
+//   const response = await fetch(BASEURL + '/courses');
+//   const coursesJson = await response.json();
+//   if (response.ok) {
+//     return coursesJson.map((co) => Course.from(co));
+//   } else {
+//     throw coursesJson;  // an object with the error coming from the server
+//   }
+// }
 
 /**
  * Send a POST /api/tasks
@@ -99,6 +130,8 @@ function addTask(task) {
       }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
     });
   }
+
+
   
-const API={loadAllTasks,addTask,deleteTask, updateTask, updateTaskStatusCompleted}
+const API={loadAllTasks,addTask,deleteTask, updateTask, updateTaskStatusCompleted, getTasks}
 export default API
