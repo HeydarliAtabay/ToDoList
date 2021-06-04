@@ -58,16 +58,20 @@ function App() {
   }
 
   function updateTask  (task)  {
-    setTaskList( oldTasks => oldTasks.map( t => t.id === task.id ? {...task} : t) )
+    // setTaskList( oldTasks => oldTasks.map( t => t.id === task.id ? {...task} : t) )
+    setTaskList( oldTasks => oldTasks.map( t => t.id === task.id ) )
+    setLoading(true)
     API.updateTask(task)
     .then(() => {
       setDirty(true);
+     
     }).catch(err => (err) );
     ;
+    
   }
 
   function updateTaskCompleted(task){
-    setTaskList( oldTasks => oldTasks.map( t => t.id === task.id ? {...task} : t) )
+    setTaskList( oldTasks =>  oldTasks.map( t => t.id === task.id ) )
     API.updateTaskStatusCompleted(task)
     .then(()=>{
       setDirty(true);
@@ -80,9 +84,13 @@ function App() {
   // add or update a task into the list
   const handleSaveOrUpdate = (task) => {
     // if the task has an id it is an update
-    if(task.id) updateTask(task); 
+    if(task.id) {
+      updateTask(task);
+    }
     // otherwise it is a new task to add
-    else addTask(task);
+    else {
+      addTask(task);
+    }
     setSelectedTask(MODAL.CLOSED); 
   }
 
