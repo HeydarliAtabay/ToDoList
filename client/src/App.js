@@ -3,15 +3,21 @@ import { React, useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-import { Container, Row, Col, Button } from 'react-bootstrap/';
+import { Container, Row, Col, Button, Alert } from 'react-bootstrap/';
 
 import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
+
+import AppTitle from './components/AppTittle';
+
 
 import Navigation from './components/Navigation';
 import Filters from './components/Filters';
 import ContentList from './components/ContentList';
 import ModalForm from './components/ModalForm';
+
+import { LoginForm, LogoutButton } from './components/LoginComponent';
+
 
 import API from './API'
 
@@ -23,23 +29,57 @@ function App() {
   const [taskList, setTaskList] = useState([]);
   const [loading, setLoading]=useState(true)//this for checking the loading at mount
   const [dirty, setDirty] =useState(true)
+  const [loggedIn, setLoggedIn] = useState(false); // at the beginning, no user is logged in
+  const [message, setMessage] = useState('');
+
+
   // use an enum
   const MODAL = { CLOSED: -2, ADD: -1 };
   const [selectedTask, setSelectedTask] = useState(MODAL.CLOSED);
 
 
 
+  useEffect(()=> {
+    const checkAuth = async() => {
+      try {
+        // here you have the user info, if already logged in
+        // TODO: store them somewhere and use them, if needed
+        await API.getUserInfo();
+        setLoggedIn(true);
+      } catch(err) {
+        console.error(err.error);
+      }
+    };
+    checkAuth();
+  }, []);
+
   // for getting all tasks
-  useEffect(() => {
-    if(dirty){
-      API.loadAllTasks().then(newTask=>{
-        setTaskList(newTask)
-        setLoading(false)
-        setDirty(false)
-       })
-    }
+  // useEffect(() => {
+  //   if(dirty){
+  //     API.loadAllTasks().then(newTask=>{
+  //       setTaskList(newTask)
+  //       setLoading(false)
+  //       setDirty(false)
+  //      })
+  //   }
     
-  }, [dirty])
+  // }, [dirty])
+
+  useEffect(()=> {
+    const getTasks = async () => {
+      if(loggedIn ) {
+        const tasks = await API.loadAllTasks();
+        setTaskList(tasks);
+        setLoading(false)
+        setDirty(false);
+      }
+    };
+    getTasks()
+      .catch(err => {
+        setMessage({msg: "Impossible to load your exams! Please, try again later...", type: 'danger'});
+        console.error(err);
+      });
+  }, [loggedIn,dirty]);
 
   
   function addTask (task)  {
@@ -102,20 +142,62 @@ function App() {
     setSelectedTask(MODAL.CLOSED);
   }
 
+  // const handleErrors = (err) => {
+  //   if(err.errors)
+  //     setMessage({msg: err.errors[0].msg + ': ' + err.errors[0].param, type: 'danger'});
+  //   else
+  //     setMessage({msg: err.error, type: 'danger'});
+    
+  //   setDirty(true);
+  // }
+
+
+  const doLogIn = async (credentials) => {
+    try {
+      const user = await API.logIn(credentials);
+      setLoggedIn(true);
+      setMessage({msg: `Welcome, ${user}!`, type: 'success'});
+    } catch(err) {
+      setMessage({msg: err, type: 'danger'});
+    }
+  }
+
+  const doLogOut = async () => {
+    await API.logOut();
+    setLoggedIn(false);
+    // clean up everything
+    setTaskList([])
+  }
+
   // we need to render the ModalForm subject to a condition, so that it is created and destroyed every time, thus useState is called again to initialize the state variables
   return (
     <Router>
+     <Navigation />
       <Container fluid>
-        <Navigation />
+      <Row>
+        <AppTitle/>
+        {loggedIn ? <LogoutButton logout={doLogOut} /> : <Redirect to="/login" />}
+      </Row>
+      {message && <Row>
+         <Alert variant={message.type} onClose={() => setMessage('')} dismissible>{message.msg}</Alert>
+      </Row> }
+        
         <Row className="vh-100">
           <Switch>
+          <Route path="/login" render={() => 
+          <>{loggedIn ? <Redirect to="/list/all" /> : <LoginForm login={doLogIn} />}</>
+        }/>
+        
+        
             <Route path={["/list/:filter"]}>
               <TaskMgr taskList={taskList} onDelete={deleteTask} onEdit={handleEdit} loading={loading} onSave={updateTaskCompleted}></TaskMgr>
               <Button variant="success" size="lg" className="fixed-right-bottom" onClick={() => setSelectedTask(MODAL.ADD)}>+</Button>
               {(selectedTask !== MODAL.CLOSED) && <ModalForm task={findTask(selectedTask)} onSave={handleSaveOrUpdate} onClose={handleClose}></ModalForm>}
             </Route>
-            <Redirect to="/list/all" />
+           
+          
           </Switch>
+
         </Row>
       </Container>
     </Router>

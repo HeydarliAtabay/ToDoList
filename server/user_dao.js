@@ -1,8 +1,7 @@
 'use strict'
 
-const db = new sqlite.Database('tasks.db', (err) => {
-    if(err) throw err;
-  });
+const db = require('./db');
+
 
 const bcrypt= require('bcrypt')
 

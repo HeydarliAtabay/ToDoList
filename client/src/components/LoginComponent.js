@@ -1,5 +1,7 @@
 import { Form, Button, Alert, Col } from 'react-bootstrap';
 import { useState } from 'react';
+import '../App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function LoginForm(props) {
   const [username, setUsername] = useState('');
@@ -27,24 +29,29 @@ function LoginForm(props) {
   };
 
   return (
-    <Form>
+    <>
+    <div className="loginForm" >
+    <Form  >
       {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
       <Form.Group controlId='username'>
-          <Form.Label>email</Form.Label>
-          <Form.Control type='email' value={username} onChange={ev => setUsername(ev.target.value)} />
+          <Form.Label>Email address</Form.Label>
+          <Form.Control type='email' value={username} onChange={ev => setUsername(ev.target.value)} size="lg" />
       </Form.Group>
       <Form.Group controlId='password'>
           <Form.Label>Password</Form.Label>
-          <Form.Control type='password' value={password} onChange={ev => setPassword(ev.target.value)} />
+          <Form.Control type='password' value={password} onChange={ev => setPassword(ev.target.value)} size="lg" />
       </Form.Group>
-      <Button onClick={handleSubmit}>Login</Button>
-    </Form>)
+      <Button size="lg" onClick={handleSubmit}>Login</Button>
+    </Form>
+    </div>
+    </>
+    )
 }
 
 function LogoutButton(props) {
   return(
     <Col>
-      <Button variant="outline-primary" onClick={props.logout}>Logout</Button>
+      <Button size="lg" variant="outline-primary" className="logoutbtn" onClick={props.logout}>Logout</Button>
     </Col>
   )
 }

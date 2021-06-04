@@ -158,7 +158,7 @@ function addTask(task) {
 
   // getting user info 
   async function getUserInfo() {
-    const response = await fetch(BASEURL + '/sessions/current');
+    const response = await fetch(url + '/api/sessions/current');
     const userInfo = await response.json();
     if (response.ok) {
       return userInfo;

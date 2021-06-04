@@ -1,15 +1,11 @@
 'use strict';
 /* Data Access Object (DAO) module for accessing courses and exams */
-
-const sqlite = require('sqlite3');
 const dayjs = require('dayjs');
 
 
 
 // open the database
-const db = new sqlite.Database('tasks.db', (err) => {
-  if(err) throw err;
-});
+const db = require('./db');
 
  const getTodayDate = (date) => {
   return dayjs().isSame(date, 'day')
