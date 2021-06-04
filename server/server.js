@@ -68,12 +68,20 @@ passport.serializeUser((user, done) => {
   app.use(passport.initialize())
   app.use(passport.session())
 
- app.get('/api/tasks', isLoggedIn,(req,res)=>{
-    dao.listAllTasks()
-        .then((tasks)=>{res.json(tasks)})
-         .catch((error)=>{res.status(500).json("Getting Tasks from server was unsuccesful   "+ error)} )
- })
+//  app.get('/api/tasks', isLoggedIn,(req,res)=>{
+//     dao.listAllTasks()
+//         .then((tasks)=>{res.json(tasks)})
+//          .catch((error)=>{res.status(500).json("Getting Tasks from server was unsuccesful   "+ error)} )
+//  })
 
+ app.get('/api/tasks', isLoggedIn, async (req, res) => {
+  try {
+    const tasks = await dao.listAllTasks(req.user.id);
+    res.json(tasks);
+  } catch(err) {
+    res.status(500).json("Getting Tasks from server was unsuccesful   "+ error) ;
+  }
+});
 
 app.get('/api/tasks/filter/:filter', isLoggedIn, async (req, res) => {
     const filter = req.params.filter;

@@ -27,16 +27,16 @@ const db = require('./db');
 }
 
 //get all tasks
-exports.listAllTasks = () => {
+exports.listAllTasks = (userId) => {
   return new Promise((resolve, reject) => {
-    const sql = 'SELECT * FROM tasks';
-    db.all(sql, [], (err, rows) => {
+    const sql = 'SELECT * FROM tasks WHERE user=?';
+    db.all(sql, [userId], (err, rows) => {
       if (err) {
         reject(err);
         return;
       }
       const tasks = rows.map((task) => ({ id: task.id, description: task.description, important: task.important,
-    private: task.private, deadline:task.deadline, completed: task.completed  }));
+    private: task.private, deadline:task.deadline, completed: task.completed , user: task.user }));
       resolve(tasks);
     });
   });
