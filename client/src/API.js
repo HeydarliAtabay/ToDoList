@@ -32,16 +32,7 @@ async function getTasks(filter) {
       throw err;  // An object with the error coming from the server
   }
 }
-// async function getAllTasks() {
-//   // call: GET /api/courses
-//   const response = await fetch(BASEURL + '/courses');
-//   const coursesJson = await response.json();
-//   if (response.ok) {
-//     return coursesJson.map((co) => Course.from(co));
-//   } else {
-//     throw coursesJson;  // an object with the error coming from the server
-//   }
-// }
+
 
 /**
  * Send a POST /api/tasks
@@ -59,7 +50,7 @@ function addTask(task) {
           'Content-Type': 'application/json',
         },
         //body: JSON.stringify({code: exam.coursecode, score: exam.score, date: exam.date}),
-        body : JSON.stringify({description: task.description, important: task.important, private: task.private, deadline: dayjs(task.deadline), completed: 0, user:1})
+        body : JSON.stringify({description: task.description, important: task.important, private: task.private, deadline: dayjs(task.deadline), completed: task.completed, user:1})
         }).then((response) => {
           if (response.ok) {
             resolve(null);

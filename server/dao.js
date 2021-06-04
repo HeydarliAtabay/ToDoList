@@ -90,6 +90,11 @@ exports.getWithFilter = function(filter) {
                                   return false;
                           });
                           break;
+                      case "public":
+                        tasks = tasks.filter((el) => {
+                          return !el.private;
+                          });
+                          break;
                      
                   }
               }
