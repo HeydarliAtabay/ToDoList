@@ -169,6 +169,13 @@ function App() {
     setTaskList([])
   }
 
+  const history = useHistory();
+
+  const routeChange = () =>{ 
+    let path = '/login'; 
+    history.push(path);
+  }
+
   // we need to render the ModalForm subject to a condition, so that it is created and destroyed every time, thus useState is called again to initialize the state variables
   return (
     <Router>
@@ -187,14 +194,15 @@ function App() {
           <Route path="/login" render={() => 
           <>{loggedIn ? <Redirect to="/list/all" /> : <LoginForm login={doLogIn} />}</>
         }/>
-        
-        
             <Route path={["/list/:filter"]}>
               <TaskMgr taskList={taskList} onDelete={deleteTask} onEdit={handleEdit} loading={loading} onSave={updateTaskCompleted}></TaskMgr>
               <Button variant="success" size="lg" className="fixed-right-bottom" onClick={() => setSelectedTask(MODAL.ADD)}>+</Button>
               {(selectedTask !== MODAL.CLOSED) && <ModalForm task={findTask(selectedTask)} onSave={handleSaveOrUpdate} onClose={handleClose}></ModalForm>}
+              <Button onClick={routeChange}>Login</Button>
             </Route>
-           
+
+            <Redirect to="list/all"/>
+          
           
           </Switch>
 
