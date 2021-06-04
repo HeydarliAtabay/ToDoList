@@ -120,7 +120,7 @@ exports.getTask = (code) => {
 };
 
 //adding new Task to the DB
-exports.createTask=(task)=>{
+exports.createTask=(task, userId)=>{
   if(task.deadline){
     task.deadline = dayjs(task.deadline);
 }
@@ -128,7 +128,7 @@ exports.createTask=(task)=>{
     const sql = 'INSERT INTO tasks(description, important, private, deadline, completed,user) VALUES(?,?,?,?,?,?)'
     //const sql= 'INSERT INTO tasks(description,user) VALUES(?,?))';
 
-    db.run(sql, [task.description, task.important, task.private, task.deadline.format('YYYY-MM-DD HH:mm'), task.completed, task.user], function(err){
+    db.run(sql, [task.description, task.important, task.private, task.deadline.format('YYYY-MM-DD HH:mm'), task.completed, userId], function(err){
       if(err){
         reject(err);
         return;

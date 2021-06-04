@@ -50,7 +50,7 @@ function addTask(task) {
           'Content-Type': 'application/json',
         },
         //body: JSON.stringify({code: exam.coursecode, score: exam.score, date: exam.date}),
-        body : JSON.stringify({description: task.description, important: task.important, private: task.private, deadline: dayjs(task.deadline), completed: task.completed, user:1})
+        body : JSON.stringify({description: task.description, important: task.important, private: task.private, deadline: dayjs(task.deadline), completed: task.completed, user: task.user})
         }).then((response) => {
           if (response.ok) {
             resolve(null);

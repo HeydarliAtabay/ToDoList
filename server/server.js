@@ -104,17 +104,29 @@ app.get('/api/tasks/:id', async (req,res)=>{
     }
 })
 
-app.post('/api/tasks', (req,res) => {
-    const task = req.body;
-    if(!task){
-        res.status(400).end();
-    } else {
-        dao.createTask(task)
-            .then((id) => res.status(201).json(`New task with id:${id} was added to the DB`))
-            .catch((error) => res.status(500).json("Adding a new task was unsuccessful    "+ error),
-        );
-    }
-});
+// app.post('/api/tasks', isLoggedIn, (req,res) => {
+//     const task = req.body;
+//     if(!task){
+//         res.status(400).end();
+//     } else {
+//         dao.createTask(task,req.user.id)
+//             .then((id) => res.status(201).json(`New task with id:${id} was added to the DB`))
+//             .catch((error) => res.status(500).json("Adding a new task was unsuccessful    "+ error),
+//         );
+//     }
+// });
+
+app.post('/api/tasks', isLoggedIn, async (req,res)=>{
+ 
+  const task = req.body
+
+  try {
+    await dao.createTask(task, req.user.id);
+    res.status(201).end();
+  } catch(err) {
+    res.status(503).json({error: `Database error during the creation of exam ${exam.code}.`});
+  }
+})
 
 app.put('/api/tasks/update/:taskId', (req,res) => {
    
