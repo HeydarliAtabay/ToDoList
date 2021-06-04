@@ -95,3 +95,10 @@ Finally, remember to add the `final` tag for the final submission, otherwise it 
 - DELETE http://localhost:3001/api/tasks/delete/15]
 - [Selected task with id:{taskId} was deleted]
 - [Error response: " Error while deleting the task with id:{taskId} " + error object]
+
+# Test Users
+
+| Email address      | Password |
+| :----------------- | :------: |
+| john.doe@polito.it | password |
+| atabay@polito.it   | atabay11 |
