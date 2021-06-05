@@ -181,7 +181,7 @@ function App() {
         <Row className="vh-100">
           <Switch>
           <Route path="/login" render={() => 
-          <>{loggedIn ? <Redirect to="/list/all" /> : <LoginForm login={doLogIn} />}</>
+          <>{loggedIn ? <Redirect to="/list/all" /> : <LoginForm login={doLogIn} serverError={message.msg}/>}</>
         }/>
             <Route path={["/list/:filter"]}>
               <TaskMgr taskList={taskList} onDelete={deleteTask} onEdit={handleEdit} loading={loading} onSave={updateTaskCompleted}></TaskMgr>

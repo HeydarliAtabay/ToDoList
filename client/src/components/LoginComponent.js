@@ -7,6 +7,7 @@ function LoginForm(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('') ;
+  const {serverError}=props
   
   const handleSubmit = (event) => {
       event.preventDefault();
@@ -27,7 +28,7 @@ function LoginForm(props) {
         setErrorMessage('Username should be an email address')
       }
 
-      else setErrorMessage('Entered credentials are not true')
+     // else setErrorMessage('Entered credentials are not true')
 
 
   };
@@ -44,7 +45,8 @@ function LoginForm(props) {
           <Form.Label>Password</Form.Label>
           <Form.Control type='password' value={password} onChange={ev => setPassword(ev.target.value)} size="lg" />
       </Form.Group>
-      {errorMessage ? <Alert variant='danger'>{errorMessage}{props.servererror}</Alert> : ''}
+      {errorMessage ?  <Alert variant='danger'>{errorMessage}</Alert> : ''}
+      { serverError ?  <Alert variant='danger'>{serverError}</Alert> : ''}
       <Button size="lg" onClick={handleSubmit}>Login</Button>
     </Form>
     </div>
