@@ -7,7 +7,7 @@ function Navigation(props) {
 
 
   return (
-    <Navbar bg="success" variant="dark" fixed="top">
+    <Navbar bg="dark" variant="dark" fixed="top">
       { /* <Navbar.Toggle aria-controls="left-sidebar" onClick={this.showSidebar}/> */}
       <Navbar.Toggle aria-controls="left-sidebar"/>
       <Navbar.Brand href="/">

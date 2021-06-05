@@ -3,7 +3,7 @@ import { React, useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-import { Container, Row, Col, Button } from 'react-bootstrap/';
+import { Container, Row, Col, Button, Image } from 'react-bootstrap/';
 
 import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
@@ -17,7 +17,7 @@ import ContentList from './components/ContentList';
 import ModalForm from './components/ModalForm';
 
 import { LoginForm} from './components/LoginComponent';
-
+import crying from '../src/cry.png'
 
 import API from './API'
 
@@ -31,6 +31,7 @@ function App() {
   const [dirty, setDirty] =useState(true)
   const [loggedIn, setLoggedIn] = useState(false); // at the beginning, no user is logged in
   const [message, setMessage] = useState('');
+  const [userId, setUserId]=useState('')
 
 
   // use an enum
@@ -121,6 +122,15 @@ function App() {
     return taskList.find( t => t.id === id);
   }
 
+  function updateTaskUncompleted(task){
+    setTaskList( oldTasks =>  oldTasks.map( t => t.id === task.id ) )
+    API.updateTaskStatusUncompleted(task)
+    .then(()=>{
+      setDirty(true);
+    }).catch(err=>(err))
+  }
+ 
+
   // add or update a task into the list
   const handleSaveOrUpdate = (task) => {
     // if the task has an id it is an update
@@ -156,6 +166,7 @@ function App() {
     try {
       const user = await API.logIn(credentials);
       setLoggedIn(true);
+      setUserId(user)
       setMessage({msg: `Welcome, ${user}!`, type: 'success'});
     } catch(err) {
       setMessage({msg: err, type: 'danger'});
@@ -177,16 +188,16 @@ function App() {
      
      {loggedIn? <Navigation logout={doLogOut} link={"/login"} info={"Log out "} />: <Navigation logout={doLogOut} link="/login"info={"Log in "} />}
     {loggedIn && message ?<UserDetails greetings={message.msg}/>: <Row/>}
-      <Container fluid>  
+      <Container fluid >  
         <Row className="vh-100">
           <Switch>
           <Route path="/login" render={() => 
           <>{loggedIn ? <Redirect to="/list/all" /> : <LoginForm login={doLogIn} serverError={message.msg}/>}</>
         }/>
             <Route path={["/list/:filter"]}>
-              <TaskMgr taskList={taskList} onDelete={deleteTask} onEdit={handleEdit} loading={loading} onSave={updateTaskCompleted}></TaskMgr>
-              <Button variant="success" size="lg" className="fixed-right-bottom" onClick={() => setSelectedTask(MODAL.ADD)}>+</Button>
-              {(selectedTask !== MODAL.CLOSED) && <ModalForm task={findTask(selectedTask)} onSave={handleSaveOrUpdate} onClose={handleClose}></ModalForm>}
+              <TaskMgr taskList={taskList} onDelete={deleteTask} onEdit={handleEdit} logged={loggedIn}loading={loading} onMave={updateTaskUncompleted} onSave={updateTaskCompleted}></TaskMgr>
+              <Button variant="success" size="lg" className="fixed-right-bottom" onClick={() => setSelectedTask(MODAL.ADD)  }>+</Button>
+              {(selectedTask !== MODAL.CLOSED) && <ModalForm task={findTask(selectedTask)} onSave={handleSaveOrUpdate} onClose={handleClose} userId={userId}></ModalForm>}
             </Route>
 
             <Redirect to="list/all"/>
@@ -204,7 +215,7 @@ function App() {
 
 function TaskMgr (props) {
 
-  const { taskList, onDelete, onEdit,loading, onSave } = props;
+  const { taskList, onDelete, onEdit,loading, onSave, onMave, logged } = props;
 
   // Gets active filter from route if matches, otherwise the dafault is all
   const params = useParams();
@@ -250,16 +261,23 @@ function TaskMgr (props) {
 
   return (
     <>
-      <Col xs={4} bg="light" className="below-nav" id="left-sidebar">
-          <Filters items={filters} defaultActiveKey={activeFilter} onSelection={handleSelection} />
+   <Col xs={4} bg="light" className="below-nav" id="left-sidebar">
+          {logged &&<Filters items={filters} defaultActiveKey={activeFilter} onSelection={handleSelection} />}
         </Col>
       <Col xs={8} className="below-nav">
         <h1 className="pb-3">Filter: <small className="text-muted">{activeFilter}</small></h1>
-        {loading ? <h3>Please wait, data is loading</h3>:
+        {!logged && 
+        <>
+        <h3> You don't have any tasks! You should Log In first :( </h3>
+            <Image src={crying} size="sm"></Image> 
+     </>
+        }
+        { logged && loading ? <h3>Please wait, data is loading</h3>:
         <ContentList 
           tasks={taskList.filter(filters[activeFilter].filterFn)} 
           onDelete={onDelete} onEdit={onEdit}
           onSave={onSave}
+          onMave={onMave}
           />
         }
       </Col>

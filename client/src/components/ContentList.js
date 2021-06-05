@@ -25,7 +25,7 @@ function formatDeadline (date) {
 }
 
 function TaskRowData(props) {
-  const { task, onSave } = props;
+  const { task, onSave, onMave} = props;
   const [status, setStatus]=useState(task? task.completed : false)
 
   const handleSubmit = (event) => {
@@ -38,13 +38,32 @@ function TaskRowData(props) {
     
   }
 
+  const onChangeTask = (ev,task) => {
+    if(ev.target.checked) {
+      task.completed = true;
+      setStatus(true)
+      const newTask = Object.assign({}, task, { completed: status} );
+      onSave(newTask);
+
+    } 
+    
+    else {
+      task.completed = false;
+      setStatus(false)
+      const newTask = Object.assign({}, task, { completed: status} );
+
+      onMave(newTask);
+    }
+  }
+
+
   return (
     <>
     <Col sm={4}>
       <div className="flex-fill m-auto">
         <Form onSubmit={handleSubmit}>
         <Form.Group className="m-0" controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label={task.description} checked={status} className={task.important ? 'important' : '' } onChange={(ev) => setStatus(ev.target.checked)} />
+          <Form.Check type="checkbox" label={task.description} checked={status} className={task.important ? 'important' : '' } onChange={(ev) => onChangeTask(ev,task)} />
         </Form.Group>
         </Form>
         </div>
@@ -73,7 +92,7 @@ function TaskRowControl (props) {
 
 
 function ContentList (props) {
-  const { tasks, onDelete, onEdit, onSave } = props;
+  const { tasks, onDelete, onEdit, onSave, onMave } = props;
 
   return (
     <>
@@ -83,7 +102,7 @@ function ContentList (props) {
           tasks.map(t => {
             return (
               <ListGroup.Item as="li" key={t.id} className="d-flex w-100 justify-content-between">
-                  <TaskRowData task={t} onSave={onSave}/>
+                  <TaskRowData task={t} onSave={onSave} onMave={onMave}/>
                   <TaskRowControl task={t} onDelete={() => onDelete(t)} onEdit={() => onEdit(t)} />
               </ListGroup.Item>
             );

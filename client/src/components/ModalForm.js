@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 
 
 function ModalForm(props) {
-  const { task, onClose, onSave } = props;
+  const { task, onClose, onSave,userId } = props;
 
   // use controlled form components
   const [description, setDescription] = useState(task ? task.description : '');
@@ -40,7 +40,7 @@ function ModalForm(props) {
         deadline = dayjs(deadlineDate + "T12:00"); // tasks with no time are due by noon
       }
 
-      const newTask = Object.assign({}, task, { description, important: isImportant, private: isPrivate, deadline, completed: status} );
+      const newTask = Object.assign({}, task, { description, important: isImportant, private: isPrivate, deadline, completed: status, user:userId} );
 
       onSave(newTask);
     }
