@@ -3,12 +3,12 @@ import { React, useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-import { Container, Row, Col, Button, Alert } from 'react-bootstrap/';
+import { Container, Row, Col, Button } from 'react-bootstrap/';
 
 import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
 
-import AppTitle from './components/AppTittle';
+import UserDetails from './components/UserDetails'
 
 
 import Navigation from './components/Navigation';
@@ -167,27 +167,17 @@ function App() {
     setLoggedIn(false);
     // clean up everything
     setTaskList([])
+    setMessage('')
   }
 
-  // const history = useHistory();
-
-  // const routeChange = () =>{ 
-  //   let path = '/login'; 
-  //   history.push(path);
-  // }
 
   // we need to render the ModalForm subject to a condition, so that it is created and destroyed every time, thus useState is called again to initialize the state variables
   return (
     <Router>
      
-     {loggedIn? <Navigation logout={doLogOut} link={"/login"} info={"LogOut "} />: <Navigation logout={doLogOut} link="/login"info={"Log in "} />}
-      <Container fluid>
-      {message && <Row>
-        <Row>
-         <Alert variant={message.type} onClose={() => setMessage('')} dismissible>{message.msg}</Alert>
-      </Row>
-      </Row> }
-        
+     {loggedIn? <Navigation logout={doLogOut} link={"/login"} info={"Log out "} />: <Navigation logout={doLogOut} link="/login"info={"Log in "} />}
+    {loggedIn && message ?<UserDetails greetings={message.msg}/>: <Row/>}
+      <Container fluid>  
         <Row className="vh-100">
           <Switch>
           <Route path="/login" render={() => 

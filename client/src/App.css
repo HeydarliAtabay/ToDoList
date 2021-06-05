@@ -51,3 +51,12 @@
   width: 370px;
   height: max-content;
 }
+
+.userdet {
+  position: absolute;
+  right: -20px;
+  padding-top: 5rem;
+  border: 2px solid rgb(41, 39, 39);
+  border-radius: 25px;
+  width: 250px;
+}

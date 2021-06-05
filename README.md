@@ -98,7 +98,8 @@ Finally, remember to add the `final` tag for the final submission, otherwise it 
 
 # Test Users
 
-| Email address      | Password |
-| :----------------- | :------: |
-| john.doe@polito.it | password |
-| atabay@polito.it   | atabay11 |
+| Email address    | Password |
+| :--------------- | :------: |
+| atabay@polito.it | atabay11 |
+| bade@polito.it   | password |
+| soufi@polito.it  | soufi11  |

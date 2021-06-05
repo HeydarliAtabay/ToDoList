@@ -1,4 +1,4 @@
-import { Form, Button, Alert, Col } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
 import { useState } from 'react';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -48,12 +48,4 @@ function LoginForm(props) {
     )
 }
 
-function LogoutButton(props) {
-  return(
-    <Col>
-      <Button size="lg" variant="outline-primary" className="logoutbtn" onClick={props.logout}>Logout</Button>
-    </Col>
-  )
-}
-
-export { LoginForm, LogoutButton };
+export { LoginForm };
