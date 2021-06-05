@@ -128,13 +128,18 @@ app.post('/api/tasks', isLoggedIn, async (req,res)=>{
   }
 })
 
-app.put('/api/tasks/update/:taskId', (req,res) => {
-   
-        const task = req.body;
-        dao.updateTask(req.params.taskId,task)
-            .then((id) => res.status(200).json( `Task with id:${req.params.taskId} was updated succesfully`))
-            .catch((error) => res.status(500).json( `There was error while updating the task with id:${req.params.taskId}    ` + error),
-            );
+//dao.updateTask(req.params.taskId,task)
+
+app.put('/api/tasks/update/:taskId', isLoggedIn, async (req,res) => {
+  const task = req.body
+ 
+  try {
+    await dao.updateTask(req.params.taskId,task);
+    res.status(201).end();
+  } catch(err) {
+    res.status(503).json({error: `Database error during the creation of exam ${exam.code}.`});
+  }
+        
    
 });
 

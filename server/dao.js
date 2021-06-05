@@ -145,8 +145,8 @@ exports.updateTask = function(id, task) {
   if(task.deadline)
       task.deadline = dayjs(task.deadline);
   return new Promise((resolve, reject) => {
-      const sql = 'UPDATE tasks SET description = ?, important = ?, private = ?, deadline = ?, completed = ?,user=? WHERE id = ?';
-      db.run(sql, [task.description, task.important, task.private, task.deadline.format("YYYY-MM-DD HH:mm"), task.completed, task.user, id], (err) => {
+      const sql = 'UPDATE tasks SET description = ?, important = ?, private = ?, deadline = ?, completed = ? WHERE id = ?';
+      db.run(sql, [task.description, task.important, task.private, task.deadline.format("YYYY-MM-DD HH:mm"), task.completed, id], (err) => {
           if(err){
               console.log(err);
               reject(err);

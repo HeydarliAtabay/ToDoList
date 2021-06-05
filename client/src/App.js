@@ -31,7 +31,7 @@ function App() {
   const [dirty, setDirty] =useState(true)
   const [loggedIn, setLoggedIn] = useState(false); // at the beginning, no user is logged in
   const [message, setMessage] = useState('');
-  const [userId, setUserId]=useState('')
+  const [userId, setUserId]=useState(1)
 
 
   // use an enum
@@ -196,7 +196,7 @@ function App() {
         }/>
             <Route path={["/list/:filter"]}>
               <TaskMgr taskList={taskList} onDelete={deleteTask} onEdit={handleEdit} logged={loggedIn}loading={loading} onMave={updateTaskUncompleted} onSave={updateTaskCompleted}></TaskMgr>
-              <Button variant="success" size="lg" className="fixed-right-bottom" onClick={() => setSelectedTask(MODAL.ADD)  }>+</Button>
+             {loggedIn && <Button variant="success" size="lg" className="fixed-right-bottom" onClick={() => setSelectedTask(MODAL.ADD)  }>+</Button>} 
               {(selectedTask !== MODAL.CLOSED) && <ModalForm task={findTask(selectedTask)} onSave={handleSaveOrUpdate} onClose={handleClose} userId={userId}></ModalForm>}
             </Route>
 
