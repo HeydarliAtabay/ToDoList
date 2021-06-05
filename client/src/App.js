@@ -270,7 +270,7 @@ function TaskMgr (props) {
           {logged &&<Filters items={filters} defaultActiveKey={activeFilter} onSelection={handleSelection} />}
         </Col>
       <Col xs={8} className="below-nav">
-        <h1 className="pb-3">Filter: <small className="text-muted">{activeFilter}</small></h1>
+       {logged && <h1 className="pb-3">Filter: <small className="text-muted">{activeFilter}</small></h1>} 
         {!logged && loading &&
        
         <>
