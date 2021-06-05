@@ -113,9 +113,12 @@ function App() {
 
   function updateTaskCompleted(task){
     setTaskList( oldTasks =>  oldTasks.map( t => t.id === task.id ) )
+    setLoading(true)
     API.updateTaskStatusCompleted(task)
     .then(()=>{
+      
       setDirty(true);
+     
     }).catch(err=>(err))
   }
   function findTask (id)  {
@@ -124,7 +127,10 @@ function App() {
 
   function updateTaskUncompleted(task){
     setTaskList( oldTasks =>  oldTasks.map( t => t.id === task.id ) )
+    
+    setLoading(true)
     API.updateTaskStatusUncompleted(task)
+    
     .then(()=>{
       setDirty(true);
     }).catch(err=>(err))
@@ -266,8 +272,10 @@ function TaskMgr (props) {
         </Col>
       <Col xs={8} className="below-nav">
         <h1 className="pb-3">Filter: <small className="text-muted">{activeFilter}</small></h1>
-        {!logged && 
+        {!logged && loading &&
+       
         <>
+        
         <h3> You don't have any tasks! You should Log In first :( </h3>
             <Image src={crying} size="sm"></Image> 
      </>
