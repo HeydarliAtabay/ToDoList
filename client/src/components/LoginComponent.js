@@ -12,8 +12,7 @@ function LoginForm(props) {
       event.preventDefault();
       setErrorMessage('');
       const credentials = { username, password };
-      
-      // SOME VALIDATION, ADD MORE!!!
+      const emailcheck=username.includes("@")
       let valid = true;
       if(username === '' || password === '' || password.length < 6)
           valid = false;
@@ -22,17 +21,21 @@ function LoginForm(props) {
       {
         props.login(credentials);
       }
-      else {
-        // show a better error message...
-        setErrorMessage('Error(s) in the form, please fix it.')
+      if(password.length<=5) setErrorMessage('The length of password should be higher than 5 characters')
+      
+      if(!emailcheck)  {
+        setErrorMessage('Username should be an email address')
       }
+
+      else setErrorMessage('Entered credentials are not true')
+
+
   };
 
   return (
     <>
     <div className="loginForm" >
     <Form  >
-      {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
       <Form.Group controlId='username'>
           <Form.Label>Email address</Form.Label>
           <Form.Control type='email' value={username} onChange={ev => setUsername(ev.target.value)} size="lg" />
@@ -41,6 +44,7 @@ function LoginForm(props) {
           <Form.Label>Password</Form.Label>
           <Form.Control type='password' value={password} onChange={ev => setPassword(ev.target.value)} size="lg" />
       </Form.Group>
+      {errorMessage ? <Alert variant='danger'>{errorMessage}{props.servererror}</Alert> : ''}
       <Button size="lg" onClick={handleSubmit}>Login</Button>
     </Form>
     </div>

@@ -170,7 +170,7 @@ function App() {
     setMessage('')
   }
 
-
+//
   // we need to render the ModalForm subject to a condition, so that it is created and destroyed every time, thus useState is called again to initialize the state variables
   return (
     <Router>

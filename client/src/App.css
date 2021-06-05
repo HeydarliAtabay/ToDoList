@@ -47,7 +47,7 @@
   padding: 2rem;
   border: 2px solid rgb(41, 39, 39);
   border-radius: 25px;
-  margin: 0 auto;
+  margin: 8rem auto auto auto;
   width: 370px;
   height: max-content;
 }
