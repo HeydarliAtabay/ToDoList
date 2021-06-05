@@ -1,8 +1,10 @@
 import {Navbar, Nav, Form} from 'react-bootstrap/';
 import { PersonCircle, CheckAll } from 'react-bootstrap-icons';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../App.css';
 
 function Navigation(props) {
+
 
   return (
     <Navbar bg="success" variant="dark" fixed="top">
@@ -16,7 +18,7 @@ function Navigation(props) {
       </Form>
       <Nav className="ml-auto">
         <Nav.Item>
-          <Nav.Link href="#">
+          <Nav.Link onClick={props.logout} href={props.link}> {props.info}
             <PersonCircle size="30" />
           </Nav.Link>
         </Nav.Item>

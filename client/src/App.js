@@ -16,7 +16,7 @@ import Filters from './components/Filters';
 import ContentList from './components/ContentList';
 import ModalForm from './components/ModalForm';
 
-import { LoginForm, LogoutButton } from './components/LoginComponent';
+import { LoginForm} from './components/LoginComponent';
 
 
 import API from './API'
@@ -169,24 +169,23 @@ function App() {
     setTaskList([])
   }
 
-  const history = useHistory();
+  // const history = useHistory();
 
-  const routeChange = () =>{ 
-    let path = '/login'; 
-    history.push(path);
-  }
+  // const routeChange = () =>{ 
+  //   let path = '/login'; 
+  //   history.push(path);
+  // }
 
   // we need to render the ModalForm subject to a condition, so that it is created and destroyed every time, thus useState is called again to initialize the state variables
   return (
     <Router>
-     <Navigation />
+     
+     {loggedIn? <Navigation logout={doLogOut} link={"/login"} info={"LogOut "} />: <Navigation logout={doLogOut} link="/login"info={"Log in "} />}
       <Container fluid>
-      <Row>
-        <AppTitle/>
-        {loggedIn ? <LogoutButton logout={doLogOut} /> : <Redirect to="/login" />}
-      </Row>
       {message && <Row>
+        <Row>
          <Alert variant={message.type} onClose={() => setMessage('')} dismissible>{message.msg}</Alert>
+      </Row>
       </Row> }
         
         <Row className="vh-100">
@@ -198,7 +197,6 @@ function App() {
               <TaskMgr taskList={taskList} onDelete={deleteTask} onEdit={handleEdit} loading={loading} onSave={updateTaskCompleted}></TaskMgr>
               <Button variant="success" size="lg" className="fixed-right-bottom" onClick={() => setSelectedTask(MODAL.ADD)}>+</Button>
               {(selectedTask !== MODAL.CLOSED) && <ModalForm task={findTask(selectedTask)} onSave={handleSaveOrUpdate} onClose={handleClose}></ModalForm>}
-              <Button onClick={routeChange}>Login</Button>
             </Route>
 
             <Redirect to="list/all"/>
