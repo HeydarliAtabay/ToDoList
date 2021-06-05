@@ -122,9 +122,9 @@ app.post('/api/tasks', isLoggedIn, async (req,res)=>{
 
   try {
     await dao.createTask(task, req.user.id);
-    res.status(201).end();
+    res.status(201).json(`New task with id:${task.id} was added to the DB`);
   } catch(err) {
-    res.status(503).json({error: `Database error during the creation of exam ${exam.code}.`});
+    res.status(503).json({error: `Adding a new task was unsuccessful`});
   }
 })
 
@@ -135,9 +135,9 @@ app.put('/api/tasks/update/:taskId', isLoggedIn, async (req,res) => {
  
   try {
     await dao.updateTask(req.params.taskId,task);
-    res.status(201).end();
+    res.status(201).json(`Task with id:${req.params.taskId} was updated succesfully`);
   } catch(err) {
-    res.status(503).json({error: `Database error during the creation of exam ${exam.code}.`});
+    res.status(503).json({error: `There was error while updating the task with id:${taskId}`});
   }
         
    

@@ -101,11 +101,10 @@ function App() {
   function updateTask  (task)  {
     // setTaskList( oldTasks => oldTasks.map( t => t.id === task.id ? {...task} : t) )
     setTaskList( oldTasks => oldTasks.map( t => t.id === task.id ) )
-    setLoading(true)
+   setLoading(true)
     API.updateTask(task)
     .then(() => {
       setDirty(true);
-     
     }).catch(err => (err) );
     ;
     
@@ -113,7 +112,7 @@ function App() {
 
   function updateTaskCompleted(task){
     setTaskList( oldTasks =>  oldTasks.map( t => t.id === task.id ) )
-    setLoading(true)
+   setLoading(true)
     API.updateTaskStatusCompleted(task)
     .then(()=>{
       
